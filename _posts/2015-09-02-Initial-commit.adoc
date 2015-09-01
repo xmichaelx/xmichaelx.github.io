@@ -1,6 +1,6 @@
 = Initial commit
 :published_at: 2015-09-02
-:hp-tags: Blog, JavaScript, Csharp
+:hp-tags: Blog, JavaScript, Csharp, Python, programming
 
 
 This blog will be featuring programming tutorials and recipes. What kind of tutorials and recipes can you expect here?
