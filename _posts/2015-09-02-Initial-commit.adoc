@@ -16,3 +16,5 @@ Some of the tutorials may also be written in polish for folks who have difficult
 EDIT: Testing embedding videos:
 
 video::pKN9trFSACI[youtube]
+
+image::<milkyway.jpg>[]
