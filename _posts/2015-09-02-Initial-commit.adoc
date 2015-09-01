@@ -22,7 +22,10 @@ EDIT: Testing embedding images:
 image::milkyway.jpg[]
 
 
+EDIT: Testing embedding code:
+
 [source,xml]
+.test.xml
 ----
 <section>
   <title>Section Title</title> 
