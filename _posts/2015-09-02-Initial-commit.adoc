@@ -17,4 +17,14 @@ EDIT: Testing embedding videos:
 
 video::pKN9trFSACI[youtube]
 
+EDIT: Testing embedding images:
+
 image::milkyway.jpg[]
+
+
+[source,xml]
+----
+<section>
+  <title>Section Title</title> 
+</section>
+----
