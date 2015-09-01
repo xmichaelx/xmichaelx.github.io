@@ -12,3 +12,7 @@ This blog will be featuring programming tutorials and recipes. What kind of tuto
 - a little bit of other things
 
 Some of the tutorials may also be written in polish for folks who have difficulty reading english tutorials. I guess that sums up my initial post. Roger out.
+
+EDIT: Testing embedding videos:
+
+video::pKN9trFSACI[youtube]
