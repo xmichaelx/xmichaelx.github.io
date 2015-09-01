@@ -24,6 +24,7 @@ image::milkyway.jpg[]
 
 EDIT: Testing embedding code:
 
+[[app-listing]]
 [source,xml]
 .test.xml
 ----
