@@ -1,6 +1,14 @@
-= title
+= Initial commit
 :published_at: 2015-09-02
 :hp-tags: Blog, JavaScript, Csharp
 
 
-initial commit dsa
+This blog will be featuring programming tutorials and recipes. What kind of tutorials and recipes can you expect here?
+
+- service and web-oriented C# - since I'm mainly a .NET developer
+- Azure Cloud - since I heavily rely on it for my work (mainly Blob Storage, WebApps and Azure Queue)
+- JavaScript and TypeScript
+- some small Python projects doing fun stuff
+- a little bit of other things
+
+Some of the tutorials may also be written in polish for folks who have difficulty reading english tutorials. I guess that sums up my initial post. Roger out.
