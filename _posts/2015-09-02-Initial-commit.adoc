@@ -17,4 +17,4 @@ EDIT: Testing embedding videos:
 
 video::pKN9trFSACI[youtube]
 
-image::https://raw.githubusercontent.com/xmichaelx/xmichaelx.github.io/master/images/milkyway.jpg[]
+image::milkyway.jpg[]
