@@ -1,3 +1,6 @@
 = title
+:published_at: 2015-09-02
+:hp-tags: Blog, JavaScript, Csharp
+
 
 initial commit
