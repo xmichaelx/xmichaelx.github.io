@@ -2,7 +2,12 @@
 :published_at: 2015-09-02
 :hp-tags: Blog, Python, image processing, programming
 
-Suppose you have image similar to the one of the following:
+Suppose you have following image and you would like to know area of shapes present on it.
 
-[[img-sunset]]
-image::grosz.jpg[caption="Figure 1: ", title="A mountain sunset", alt="Sunset", width="300", height="200"]
+
+image::shapes.jpg[caption="Figure 1: ", title="Scan of A4 sheet with couple of handwritten shapes", alt="Sunset", width="300", height="200"]
+
+
+
+
+image::grosz.jpg[caption="Figure 2: ", title="Scan of A4 sheet of paper with a coin on it", alt="Sunset", width="300", height="200"]
