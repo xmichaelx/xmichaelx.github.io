@@ -1,1 +1,8 @@
 = Calculating area of objects visible in frame
+:published_at: 2015-09-02
+:hp-tags: Blog, Python, image processing, programming
+
+Suppose you have image similar to the one of the following:
+
+[[img-sunset]]
+image::grosz.jpg[caption="Figure 1: ", title="A mountain sunset", alt="Sunset", width="300", height="200"]
