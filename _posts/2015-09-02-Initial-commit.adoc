@@ -16,3 +16,19 @@ Some of the tutorials may also be written in polish for folks who have difficult
 EDIT: Testing embedding videos:
 
 video::pKN9trFSACI[youtube]
+
+EDIT: Testing embedding images:
+
+image::milkyway.jpg[]
+
+
+EDIT: Testing embedding code:
+
+[[app-listing]]
+[source,xml]
+.test.xml
+----
+<section>
+  <title>Section Title</title> 
+</section>
+----
