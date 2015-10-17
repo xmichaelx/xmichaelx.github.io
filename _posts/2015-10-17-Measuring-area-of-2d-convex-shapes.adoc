@@ -31,8 +31,7 @@ If everything loads correctly it means we have the packages we need in place and
 
 == Input data and some restrictions
 
-We assume that the images we will be processing are scans of white A4 sheets of paper which have following dimensions: 210 mm × 297 mm. 
-This will provide us with a way of converting area from pixel count back to square milimetres depending on the resolution of the scans.
+We assume that the images we will be processing are scans of white A4 sheets of paper. 
 
 Another assumption we make is that shapes will be convex. What does that mean for us? 
 It means that we will be able to use convex hulls to compute areas of the found shapes and the shapes won't be too complicated.
@@ -68,7 +67,7 @@ def main():
         print("Input format: <filepath> <minimum size of detected shape in pixels> <threshold between 0 and 1>")
         return
 
-    filepath = sys.argv[1]
+      filepath = sys.argv[1]
     minimum_pixel_size = int(sys.argv[2])
     threshold = float(sys.argv[3])
 
@@ -135,12 +134,26 @@ for i in range(1,num_segments+1):
     total_pixels_in_shape = sum(segmented == i)
 
     if total_pixels_in_shape > minimum_pixel_size:
-        convex_hull = convex_hull_image(segmented == i)
-        area = sum(convex_hull)
+        pass # code for computing convex hull
 ----
 
-Next we iterate over each shape value, count the pixels and filter out shapes that don't have enough
+Next we iterate over each shape number, count the pixels and filter out shapes that don't have enough pixels (assuming they are artifacts produced by uneven illumination).
+Then for each shape we select its pixels and calculate total area using convex hull:
 
+
+[source,python]
+----
+convex_hull = convex_hull_image(segmented == i)
+area = sum(convex_hull)
+----
+
+Coin on the first image is a polish grosz, which has a diamater of 15,5 mm. Which gives area of 188,692 square milimeters. 
+Using minimum size in pixels = 20 and threshold value = 0.8 we get area of coin equal to 11771 pixels. 
+Using those two values we can compute conversion factor between pixels and square milimetres, 
+for this case one pixel is roughly equal to 0,016 square milimetres.
+
+By using objects with well-known dimensions we can compute conversion factor for other shapes on the image. 
+ 
 
 == Final code
 
