@@ -33,7 +33,7 @@
     <meta property="og:description" content="You can easily measure area of 2d shapes drawn or placed on a A4 sheet. Given few minor constraints you can do it in less than 30 lines of Python code. Requirements Python 2.7 SciPy Scikit-image If you&amp;#8217;..." />
     <meta property="og:url" content="https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html" />
     <meta property="article:published_time" content="2015-10-16T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-17T21:11:14.871Z" />
+    <meta property="article:modified_time" content="2015-10-17T21:26:28.237Z" />
     <meta property="article:tag" content="Blog" />
     <meta property="article:tag" content="Python" />
     <meta property="article:tag" content="image processing" />
@@ -59,7 +59,7 @@
     "headline": "Measuring area of 2d convex shapes",
     "url": "https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html",
     "datePublished": "2015-10-16T22:00:00.000Z",
-    "dateModified": "2015-10-17T21:11:14.871Z",
+    "dateModified": "2015-10-17T21:26:28.237Z",
     "keywords": "Blog,  Python,  image processing,  programming",
     "description": "You can easily measure area of 2d shapes drawn or placed on a A4 sheet. Given few minor constraints you can do it in less than 30 lines of Python code. Requirements Python 2.7 SciPy Scikit-image If you&amp;#8217;..."
 }
@@ -308,8 +308,7 @@ Next the script performs tresholding of the image using provided treshold value:
 </div>
 <div class="paragraph">
 <p>It assignes unique integer values to continuous patches of non-zero pixels.
-Number of segments found is stored in <strong>num_segments</strong> variable.
-New image with shapes labeled is stored in <strong>segmented</strong> variable.
+Number of segments found is stored in <strong>num_segments</strong> variable. New image with shape pixels labeled is stored in <strong>segmented</strong> variable.
 Labels have values from 1 to <strong>num_segments</strong>.</p>
 </div>
 <div class="listingblock">
@@ -322,8 +321,9 @@ Labels have values from 1 to <strong>num_segments</strong>.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Next we iterate over each shape number, count the pixels and filter out shapes that don&#8217;t have enough pixels (assuming they are artifacts produced by uneven illumination).
-Then for each shape we select its pixels and calculate total area using convex hull:</p>
+<p>Next script iterates over each shape found, counts the pixels and filters out shapes that don&#8217;t have enough pixels (assuming they are artifacts produced by uneven illumination).
+Then for each shape we select its pixels and calculate total area using <a href="http://scikit-image.org/docs/dev/auto_examples/plot_convex_hull.html">convex_hull_image</a> function
+and summing up all the pixels.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -332,13 +332,14 @@ area = sum(convex_hull)</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Coin on the first image is a polish grosz, which has a diamater of 15,5 mm. Which gives area of 188,692 square milimeters.
-Using minimum size in pixels = 20 and threshold value = 0.8 we get area of coin equal to 11771 pixels.
+<p>Coin on the first image is a polish grosz, which has a diameter of 15,5 mm. Which gives area of 188,692 square milimeters.
+Using minimum size in pixels = 20 and threshold value = 0.8 we get area of coin roughly equal to 11771 pixels.
 Using those two values we can compute conversion factor between pixels and square milimetres,
-for this case one pixel is roughly equal to 0,016 square milimetres.</p>
+for this image one pixel is roughly equal to 0,016 square milimetres.</p>
 </div>
 <div class="paragraph">
-<p>By using objects with well-known dimensions we can compute conversion factor for other shapes on the image.</p>
+<p>By using objects with well-known dimensions we can compute conversion factor for other shapes on the image.
+All we need to do is place a reference object with known or easily computable area.</p>
 </div>
 </div>
 </div>
@@ -354,7 +355,6 @@ import shutil
 from skimage import io,  color
 from scipy.ndimage.measurements import label, sum
 from skimage.morphology import convex_hull_image
-# import matplotlib.pyplot as plt
 
 
 def main():
@@ -378,37 +378,18 @@ def main():
         print("Threshold value needs to be between 0 and 1")
         return
 
-    print("Reading image: " + filename + " ...")
     image = io.imread(filename)
-    print("Converting to grayscale...")
     gray_image = color.rgb2gray(image)
-
-    print("Thresholding image using threshold value: " + str(threshold) + " ...")
     binary = gray_image &lt; threshold
-
-    print("Labeling all shapes..." )
     segmented, num_segments = label(binary)
 
-    print("Listing shapes found...")
-
-    directory = os.path.splitext(filename)[0] # functions split path in two: file path and extension
-    if os.path.exists(directory): # if directory with the name the same as file exists
-        shutil.rmtree(directory) # delete it
-
-    makedirs(directory) # create new one
-
     for i in range(1,num_segments+1):
-        total_pixels_in_shape = sum(segmented == i) # get number of all pixels in shape
+        total_pixels_in_shape = sum(segmented == i)
 
-        if total_pixels_in_shape &gt; minimum_pixel_size: # if there is enough of them
-            convex_hull = convex_hull_image(segmented == i) # calculate convex hull
-            area = sum(convex_hull) # and get number of pixels inside it
+        if total_pixels_in_shape &gt; minimum_pixel_size:
+            convex_hull = convex_hull_image(segmented == i)
+            area = sum(convex_hull)
             print("Shape number: " + str(i) +  " shape area (in pixels): " + str(area))
-
-            # pixels in convex hull are now either 0 or 1
-            convex_hull = convex_hull * 255 # rescale each value so that they are  0 or 255 range (black or white in grayscale)
-            shape_filename = directory + os.path.sep + str(i) + "_area_" + str(area) + ".jpg"
-            io.imsave(shape_filename, convex_hull) # save under given filename
 
 
 if __name__ == "__main__":
