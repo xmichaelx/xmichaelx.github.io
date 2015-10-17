@@ -14,7 +14,8 @@ Given few minor constraints you can do it in less than 30 lines of Python code.
 If you're using Linux or OSX you probably already have Python. For other two dependencies you follow instructions from their homepages.
 
 On Windows whole procedure is a little bit more tricky. You will have to download Python and then install a lot of dependencies using this link:http://www.lfd.uci.edu/~gohlke/pythonlibs[repo].
-Or you can use Anaconda which is a Python distribution that comes with a lot of packages installed for you by default (including required ones). You can download it from here: https://www.continuum.io/downloads#_windows
+
+Alternatively you can use Anaconda which is a Python distribution that comes with a lot of packages installed for you by default (including required ones). You can download it from link:https://www.continuum.io/downloads#_windows[here].
 
 You can check if everything is in place by opening python interpreter and importing following packages:
 
