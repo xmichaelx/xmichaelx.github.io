@@ -12,7 +12,7 @@ At the end of tutorial I'll also discuss what you'll need to change in order to 
 - SciPy
 - Scikit-image
 
-If you're using Linux or OSX you can probably already have Python. For other two dependencies you should follow: link:view-source:https://www.scipy.org/install.html[SciPy download]  and http://scikit-image.org/download.html.
+If you're using Linux or OSX you can probably already have Python. For other two dependencies you should follow: link:https://www.scipy.org/install.html[SciPy download]  and http://scikit-image.org/download.html.
 
 On Windows whole procedure is a little bit more tricky. You will have to download Python and then install a lot of dependencies using this repo: http://www.lfd.uci.edu/~gohlke/pythonlibs.
 Or you can use Anaconda which is a Python distribution that comes with a lot of packages installed for you by default (including required ones). You can download it from here: https://www.continuum.io/downloads#_windows
