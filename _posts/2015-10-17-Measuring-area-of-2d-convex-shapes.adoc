@@ -143,6 +143,16 @@ convex_hull = convex_hull_image(segmented == i)
 area = sum(convex_hull)
 ----
 
+
+Convex hulls generated from shapes.jpg (convex hull for grosz.jpg is the same as tresholded image):
+
+
+image:8_area_91034.jpg[1st shape,300] 
+image:9_area_244421.jpg[2nd shape,300] 
+image:12_area_20360.jpg[3rd shape,300]
+image:15_area_116402.jpg[4th shape,300]
+
+
 Coin on the first image is a link:https://en.wikipedia.org/wiki/Polish_coins_and_banknotes[polish grosz], which has a diameter of 15,5 mm. Which gives area of 188,692 square milimeters. 
 Using minimum size in pixels = 20 and threshold value = 0.8 we get area of coin roughly equal to 11771 pixels. 
 Using those two values we can compute conversion factor between pixels and square milimetres, 
