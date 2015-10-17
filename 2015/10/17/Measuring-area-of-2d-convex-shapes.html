@@ -33,7 +33,7 @@
     <meta property="og:description" content="You can easily measure area of 2d shapes drawn or placed on a A4 sheet. Given few minor constraints you can do it in less than 30 lines of Python code. Requirements Python 2.7 SciPy Scikit-image If you&amp;#8217;..." />
     <meta property="og:url" content="https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html" />
     <meta property="article:published_time" content="2015-10-16T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-17T21:30:38.248Z" />
+    <meta property="article:modified_time" content="2015-10-17T21:37:08.132Z" />
     <meta property="article:tag" content="Blog" />
     <meta property="article:tag" content="Python" />
     <meta property="article:tag" content="image processing" />
@@ -59,7 +59,7 @@
     "headline": "Measuring area of 2d convex shapes",
     "url": "https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html",
     "datePublished": "2015-10-16T22:00:00.000Z",
-    "dateModified": "2015-10-17T21:30:38.248Z",
+    "dateModified": "2015-10-17T21:37:08.132Z",
     "keywords": "Blog,  Python,  image processing,  programming",
     "description": "You can easily measure area of 2d shapes drawn or placed on a A4 sheet. Given few minor constraints you can do it in less than 30 lines of Python code. Requirements Python 2.7 SciPy Scikit-image If you&amp;#8217;..."
 }
@@ -330,6 +330,15 @@ and summing up all the pixels.</p>
 <pre class="highlight"><code class="language-python" data-lang="python">convex_hull = convex_hull_image(segmented == i)
 area = sum(convex_hull)</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Convex hulls generated from shapes.jpg (convex hull for grosz.jpg is the same as tresholded image):</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="/images/8_area_91034.jpg" alt="1st shape" width="300"></span>
+<span class="image"><img src="/images/9_area_244421.jpg" alt="2nd shape" width="300"></span>
+<span class="image"><img src="/images/12_area_20360.jpg" alt="3rd shape" width="300"></span>
+<span class="image"><img src="/images/15_area_116402.jpg" alt="4th shape" width="300"></span></p>
 </div>
 <div class="paragraph">
 <p>Coin on the first image is a <a href="https://en.wikipedia.org/wiki/Polish_coins_and_banknotes">polish grosz</a>, which has a diameter of 15,5 mm. Which gives area of 188,692 square milimeters.
