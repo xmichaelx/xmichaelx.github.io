@@ -31,10 +31,7 @@ If everything loads correctly it means we have the packages we need in place and
 
 == Input data and some restrictions
 
-We assume that the images we will be processing are scans of white A4 sheets of paper. 
-
-Another assumption we make is that shapes will be convex. What does that mean for us? 
-It means that we will be able to use convex hulls to compute areas of the found shapes and the shapes won't be too complicated.
+We assume that shapes will are link:https://en.wikipedia.org/wiki/Polygon#Convexity_and_non-convexity[convex]. This will allow us to use convex hulls to compute areas of the found shapes.
 
 We will also require from the user to specify minimum size of the valid shape in pixels in order to filter out noise in the lighting of sheet.
 
