@@ -1,0 +1,3 @@
+= Setting up IdentityServer.v3
+:published_at: 2015-10-17
+:hp-tags: Blog, C#, security, identityserver, membershipreboot, thinktecture
