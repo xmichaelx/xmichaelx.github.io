@@ -1,13 +1,21 @@
-= Calculating area of objects visible in frame
-:published_at: 2015-09-02
+= Measuring area of 2d convex shapes 
+:published_at: 2015-10-17
 :hp-tags: Blog, Python, image processing, programming
 
-Suppose you have following image and you would like to know area of shapes present on it.
+You can easily measure area of 2d shapes drawn or placed on a A4 sheet. 
+I'll show how given few minor constraints and trade-offs you can do it in less than 30 lines of Python code.
+At the end of tutorial I'll also discuss what you'll need to change in order to generalize this method a bit.
+
+== Requirements
+
+- Python 2.7
+- SciPy
+- Scikit-image
+
+If you're using Linux or OSX you can probably already have Python. For other two dependencies you should follow: https://www.scipy.org/install.html and http://scikit-image.org/download.html.
+
+On Windows whole procedure is a little bit more tricky. You will have to download Python and then install a lot of dependencies using this repo: http://www.lfd.uci.edu/~gohlke/pythonlibs.
+Or you can use Anaconda which is a Python distribution that comes with a lot of packages installed for you by default (including required ones). You can download it from here: https://www.continuum.io/downloads#_windows
 
 
-image::shapes.jpg[caption="Figure 1: ", title="Scan of A4 sheet with couple of handwritten shapes", alt="Sunset", width="300", height="200"]
 
-
-
-
-image::grosz.jpg[caption="Figure 2: ", title="Scan of A4 sheet of paper with a coin on it", alt="Sunset", width="300", height="200"]
