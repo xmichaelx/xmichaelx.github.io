@@ -220,4 +220,24 @@ if __name__ == "__main__":
 == Visualising image data
 
 
-At any moment we can save data 
+At any moment we can save image data to file. Before we do that we need to rescale image so that pixels are in 0-255 range.
+
+[source,python]
+----
+image = image * 255 
+io.imsave("image.jpg", image)
+----
+
+Alternatively we can display image using matplotlib, for that we need to import *import matplotlib.pyplot*. Then we can show image in a popup window using following code:
+
+[source,python]
+----
+import matplotlib.pyplot as plt
+image = image * 255 
+imgplot = plt.imshow(image)
+plt.show()
+----
+
+== Conclusion
+
+If you have any questions feel free to ask in the comments section.
