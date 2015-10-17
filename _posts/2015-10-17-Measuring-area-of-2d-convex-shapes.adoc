@@ -17,7 +17,7 @@ If you're using Linux or OSX you can probably already have Python. For other two
 On Windows whole procedure is a little bit more tricky. You will have to download Python and then install a lot of dependencies using this repo: http://www.lfd.uci.edu/~gohlke/pythonlibs.
 Or you can use Anaconda which is a Python distribution that comes with a lot of packages installed for you by default (including required ones). You can download it from here: https://www.continuum.io/downloads#_windows
 
-You can check if everything is in place by opening python interpreting and importing some packages:
+You can check if everything is in place by opening python interpreter and importing following packages:
 
 [source,python]
 ----
@@ -27,7 +27,7 @@ from skimage.morphology import convex_hull_image
 ----
 
 
-If everything loads correctly it means we have the libraries we need in place and we can get down to work.
+If everything loads correctly it means we have the packages we need in place and we can get down to work.
 
 == Input data and some restrictions
 
@@ -50,8 +50,46 @@ image:shapes.jpg[Shapes,300]
 
 == Python code step by step
 
-step
-step
+Our application will have input parameter provided from console. We will require:
+
+- path to the image file
+- integer indicating minimum size in pixels for a shape
+- float value between 0 and 1 as a threshold
+
+In the following block of code we check if user provided all the required parameters and whether they have valid values:
+
+[source,python]
+----
+import sys
+import os.path
+
+def main():
+    if len(sys.argv) != 4:
+        print("Input format: <filepath> <minimum size of detected shape in pixels> <threshold between 0 and 1>")
+        return
+
+    filepath = sys.argv[1]
+    minimum_pixel_size = int(sys.argv[2])
+    threshold = float(sys.argv[3])
+
+    if not os.path.isfile(filepath):
+        print("File does not exist: " + filepath)
+        return
+
+    if minimum_pixel_size < 1:
+        print("Minimum pixel size has to be larger than 1 (probably much larger)")
+        return
+
+    if (threshold < 0) or (threshold > 1):
+        print("Threshold value needs to be between 0 and 1")
+        return
+
+    print("Reading image: " + filename)
+    # rest of the code will go here
+    
+if __name__ == "__main__":
+    main()
+----
 
 
 == Final code
