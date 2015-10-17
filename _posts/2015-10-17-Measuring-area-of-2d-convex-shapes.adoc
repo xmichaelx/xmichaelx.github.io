@@ -155,7 +155,7 @@ image:12_area_20360.jpg[3rd shape,300]
 image:15_area_116402.jpg[4th shape,300]
 
 
-Coin on the first image is a link:https://en.wikipedia.org/wiki/Polish_coins_and_banknotes[polish 2 grosze], which has a diameter of 17,5 mm. Which gives area of 240,528 square milimeters. 
+Coin on the first image is a link:https://en.wikipedia.org/wiki/Polish_coins_and_banknotes[polish 2 grosze], coin which has a diameter of 17,5 mm. Which gives area of 240,528 square milimeters. 
 Using minimum size in pixels = 20 and threshold value = 0.8 we get area of coin roughly equal to 11771 pixels. 
 Using those two values we can compute conversion factor between pixels and square milimetres, 
 for this image one pixel is roughly equal to 0,02 square milimetres.
