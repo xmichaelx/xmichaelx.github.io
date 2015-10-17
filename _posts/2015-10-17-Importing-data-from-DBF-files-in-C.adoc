@@ -1,0 +1,3 @@
+= Importing data from DBF files in C#
+:published_at: 2015-10-17
+:hp-tags: Blog, C#, database, dbf, legacy, data, import
