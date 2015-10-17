@@ -1,0 +1,3 @@
+= Finding all intances of formatted text in document using C#
+:published_at: 2015-10-17
+:hp-tags: Blog, C#, word, docx, search, formatted text
