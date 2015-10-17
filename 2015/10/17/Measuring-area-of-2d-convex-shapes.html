@@ -33,7 +33,7 @@
     <meta property="og:description" content="You can easily measure area of 2d shapes drawn or placed on a A4 sheet. I&amp;#8217;ll show how given few minor constraints and trade-offs you can do it in less than 30 lines of Python code. At the..." />
     <meta property="og:url" content="https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html" />
     <meta property="article:published_time" content="2015-10-16T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-17T04:08:29.600Z" />
+    <meta property="article:modified_time" content="2015-10-17T19:33:43.639Z" />
     <meta property="article:tag" content="Blog" />
     <meta property="article:tag" content="Python" />
     <meta property="article:tag" content="image processing" />
@@ -59,7 +59,7 @@
     "headline": "Measuring area of 2d convex shapes",
     "url": "https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html",
     "datePublished": "2015-10-16T22:00:00.000Z",
-    "dateModified": "2015-10-17T04:08:29.600Z",
+    "dateModified": "2015-10-17T19:33:43.639Z",
     "keywords": "Blog,  Python,  image processing,  programming",
     "description": "You can easily measure area of 2d shapes drawn or placed on a A4 sheet. I&amp;#8217;ll show how given few minor constraints and trade-offs you can do it in less than 30 lines of Python code. At the..."
 }
@@ -197,8 +197,7 @@ from skimage.morphology import convex_hull_image</code></pre>
 <h2 id="_input_data_and_some_restrictions">Input data and some restrictions</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We assume that the images we will be processing are scans of white A4 sheets of paper which have following dimensions: 210 mm × 297 mm.
-This will provide us with a way of converting area from pixel count back to square milimetres depending on the resolution of the scans.</p>
+<p>We assume that the images we will be processing are scans of white A4 sheets of paper.</p>
 </div>
 <div class="paragraph">
 <p>Another assumption we make is that shapes will be convex. What does that mean for us?
@@ -251,7 +250,7 @@ def main():
         print("Input format: &lt;filepath&gt; &lt;minimum size of detected shape in pixels&gt; &lt;threshold between 0 and 1&gt;")
         return
 
-    filepath = sys.argv[1]
+      filepath = sys.argv[1]
     minimum_pixel_size = int(sys.argv[2])
     threshold = float(sys.argv[3])
 
@@ -322,12 +321,27 @@ Labels have values from 1 to <strong>num_segments</strong>.</p>
     total_pixels_in_shape = sum(segmented == i)
 
     if total_pixels_in_shape &gt; minimum_pixel_size:
-        convex_hull = convex_hull_image(segmented == i)
-        area = sum(convex_hull)</code></pre>
+        pass # code for computing convex hull</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Next we iterate over each shape value, count the pixels and filter out shapes that don&#8217;t have enough</p>
+<p>Next we iterate over each shape number, count the pixels and filter out shapes that don&#8217;t have enough pixels (assuming they are artifacts produced by uneven illumination).
+Then for each shape we select its pixels and calculate total area using convex hull:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">convex_hull = convex_hull_image(segmented == i)
+area = sum(convex_hull)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Coin on the first image is a polish grosz, which has a diamater of 15,5 mm. Which gives area of 188,692 square milimeters.
+Using minimum size in pixels = 20 and threshold value = 0.8 we get area of coin equal to 11771 pixels.
+Using those two values we can compute conversion factor between pixels and square milimetres,
+for this case one pixel is roughly equal to 0,016 square milimetres.</p>
+</div>
+<div class="paragraph">
+<p>By using objects with well-known dimensions we can compute conversion factor for other shapes on the image.</p>
 </div>
 </div>
 </div>
