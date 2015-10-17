@@ -237,7 +237,3 @@ image = image * 255
 imgplot = plt.imshow(image)
 plt.show()
 ----
-
-== Conclusion
-
-If you have any questions feel free to ask in the comments section.
