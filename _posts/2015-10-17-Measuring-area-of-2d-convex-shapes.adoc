@@ -46,13 +46,13 @@ image:shapes.jpg[Shapes,300]
 
 == Python code step by step
 
-Our application will have input parameter provided from console. We will require:
+Parameter are provided from console. Script requires:
 
 - path to the image file
 - integer indicating minimum size in pixels for a shape
 - float value between 0 and 1 as a threshold
 
-In the following block of code we check if user provided all the required parameters and whether they have valid values:
+In the following block of code script checks if user provided all the parameters and checks their validity. The code itself is self-explanatory.
 
 [source,python]
 ----
@@ -86,8 +86,8 @@ if __name__ == "__main__":
     main()
 ----
 
-Once we have a valid input we can begin the fun stuff.
-First we need to load the image and turn it into grayscale:
+Once script has a valid input we can begin the image processing.
+First script needs to load the image and turn it into grayscale. This is done using link:http://scikit-image.org/docs/dev/api/skimage.io.html#imread[imread] and link:http://scikit-image.org/docs/dev/api/skimage.color.html#rgb2gray[rgb2gray] functions.
 
 [source,python]
 ----
@@ -96,7 +96,7 @@ gray_image = color.rgb2gray(image)
 ----
 
 Variable *gray_image* stores now grayscale image, each pixel has value in range from 0 to 1.
-After this step we can treshold the image using provided treshold value:
+Next the script performs tresholding of the image using provided treshold value:
 
 [source,python]
 ----
@@ -111,13 +111,12 @@ image:grosz_thresholded.jpg[Grosz thresholded,300]
 image:shapes_thresholded.jpg[Shapes thresholded,300]
 
 
-
 [source,python]
 ----
 segmented, num_segments = label(binary)
 ----
 
-*label* is a function from *scipy.ndimage.measurements* package. 
+link:http://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.measurements.label.html[label] is a function from *scipy.ndimage.measurements* package. 
 
 It assignes unique integer values to continuous patches of non-zero pixels. 
 Number of segments found is stored in *num_segments* variable. 
