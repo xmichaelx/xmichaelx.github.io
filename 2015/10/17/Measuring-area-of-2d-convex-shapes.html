@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Measuring area of 2d convex shapes</title>
+    <meta name="description" content="" />
+    <link href="//fonts.googleapis.com/css?family=Noto+Sans:300,400,700" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic" rel="stylesheet" type="text/css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="//xmichaelx.github.io/themes/Saga/assets/css/style.css?v=1.0.0" rel="stylesheet" type="text/css">
+    <link href="//xmichaelx.github.io/themes/Saga/assets/css/animate.min.css?v=1.0.0" rel="stylesheet" type="text/css">
+    <link href="//xmichaelx.github.io/themes/Saga/favicon.ico" rel="shortcut icon">
+    <link rel="canonical" href="https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html" />
+    
+    <meta property="og:site_name" content="xmichaelx&#x27;s recipes" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Measuring area of 2d convex shapes" />
+    <meta property="og:description" content="You can easily measure area of 2d shapes drawn or placed on a A4 sheet. I&amp;#8217;ll show how given few minor constraints and trade-offs you can do it in less than 30 lines of Python code. At the..." />
+    <meta property="og:url" content="https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html" />
+    <meta property="article:published_time" content="2015-10-16T22:00:00.000Z" />
+    <meta property="article:modified_time" content="2015-10-17T02:31:27.473Z" />
+    <meta property="article:tag" content="Blog" />
+    <meta property="article:tag" content="Python" />
+    <meta property="article:tag" content="image processing" />
+    <meta property="article:tag" content="programming" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Measuring area of 2d convex shapes" />
+    <meta name="twitter:description" content="You can easily measure area of 2d shapes drawn or placed on a A4 sheet. I&amp;#8217;ll show how given few minor constraints and trade-offs you can do it in less than 30 lines of Python code. At the..." />
+    <meta name="twitter:url" content="https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "xmichaelx&#x27;s recipes",
+    "author": {
+        "@type": "Person",
+        "name": "Michał Drzał",
+        "image": "https://avatars.githubusercontent.com/u/1004852?v=3",
+        "url": "undefined/author/undefined",
+        "sameAs": null
+    },
+    "headline": "Measuring area of 2d convex shapes",
+    "url": "https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html",
+    "datePublished": "2015-10-16T22:00:00.000Z",
+    "dateModified": "2015-10-17T02:31:27.473Z",
+    "keywords": "Blog,  Python,  image processing,  programming",
+    "description": "You can easily measure area of 2d shapes drawn or placed on a A4 sheet. I&amp;#8217;ll show how given few minor constraints and trade-offs you can do it in less than 30 lines of Python code. At the..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost ?" />
+    <link rel="alternate" type="application/rss+xml" title="xmichaelx&#x27;s recipes" href="https://xmichaelx.github.io/rss" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+</head>
+<body class="post-template tag-Blog tag-Python tag-image-processing tag-programming">
+    <header id="header" class="animated fadeIn">
+    <div class="header-background">
+    <section class="blog-content">
+        <a id="site-url" class="blog-title" href="https://xmichaelx.github.io">xmichaelx&#x27;s recipes</a>
+        <span class="blog-description">Blog featuring tutorials, recipes and other goodies for programmers</span>
+        <nav class="links fadeIn animated">
+            <ul>
+                <!-- <li class="rss"><a title="RSS Feed" href="/rss/"><i class="fa fa-fw fa-rss-square"></i></a></li> -->
+        
+            </ul>
+        </nav>
+    </section>
+    <section class="header-content">
+        <h1 class="post-title animated fadeInUp">Measuring area of 2d convex shapes</h1>
+        <span class="post-data"><span class="date animated fadeInUp"><i class="fa fa-clock-o"></i> <time class="timesince date" data-timesince="1445032800" datetime="2015-10-17T00:00" title="17 October 2015">2015-10-17 00:00:00<ago class="ago"></time></span>
+            <span class="tags animated fadeInUp"><i class="fa fa-tags"></i> <a href="https://xmichaelx.github.io/tag/Blog">Blog</a>, <a href="https://xmichaelx.github.io/tag/Python"> Python</a>, <a href="https://xmichaelx.github.io/tag/image-processing"> image processing</a>, <a href="https://xmichaelx.github.io/tag/programming"> programming</a></span>
+            <span class="author animated fadeInUp"><i class="fa fa-user"></i> <a href="">Michał Drzał</a></span></span>
+    </section>
+    </div>
+</header>
+<main id="main" class="content">
+    <article itemtype="http://schema.org/BlogPosting" class="animated fadeIn content post post tag-Blog tag-Python tag-image-processing tag-programming">
+        <section class="post-content">
+            <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can easily measure area of 2d shapes drawn or placed on a A4 sheet.
+I&#8217;ll show how given few minor constraints and trade-offs you can do it in less than 30 lines of Python code.
+At the end of tutorial I&#8217;ll also discuss what you&#8217;ll need to change in order to generalize this method a bit.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_requirements">Requirements</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Python 2.7</p>
+</li>
+<li>
+<p>SciPy</p>
+</li>
+<li>
+<p>Scikit-image</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If you&#8217;re using Linux or OSX you can probably already have Python. For other two dependencies you should follow: <a href="https://www.scipy.org/install.html" class="bare">https://www.scipy.org/install.html</a> and <a href="http://scikit-image.org/download.html" class="bare">http://scikit-image.org/download.html</a>.</p>
+</div>
+<div class="paragraph">
+<p>On Windows whole procedure is a little bit more tricky. You will have to download Python and then install a lot of dependencies using this repo: <a href="http://www.lfd.uci.edu/~gohlke/pythonlibs" class="bare">http://www.lfd.uci.edu/~gohlke/pythonlibs</a>.
+Or you can use Anaconda which is a Python distribution that comes with a lot of packages installed for you by default (including required ones). You can download it from here: <a href="https://www.continuum.io/downloads#_windows" class="bare">https://www.continuum.io/downloads#_windows</a></p>
+</div>
+<div class="paragraph">
+<p>You can check if everything is in place by opening python interpreter and importing following packages:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">from skimage import io,  color
+from scipy.ndimage.measurements import label, sum
+from skimage.morphology import convex_hull_image</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If everything loads correctly it means we have the packages we need in place and we can get down to work.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_input_data_and_some_restrictions">Input data and some restrictions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We assume that the images we will be processing are scans of white A4 sheets of paper which have following dimensions: 210 mm × 297 mm.
+This will provide us with a way of converting area from pixel count back to square milimetres depending on the resolution of the scans.</p>
+</div>
+<div class="paragraph">
+<p>Another assumption we make is that shapes will be convex. What does that mean for us?
+It means that we will be able to use convex hulls to compute areas of the found shapes and the shapes won&#8217;t be too complicated.</p>
+</div>
+<div class="paragraph">
+<p>We will also require from the user to specify minimum size of the valid shape in pixels in order to filter out noise in the lighting of sheet.</p>
+</div>
+<div class="paragraph">
+<p>Another thing that will be required will be the treshold value between 0 (black) and 1 (white) below which we will consider pixels to be not a part of background.</p>
+</div>
+<div class="paragraph">
+<p>Below we present some sample images that will be used to test our code (coin and some hand-drawn shapes).</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="/images/grosz.jpg" alt="Grosz" width="300"></span>
+<span class="image"><img src="/images/shapes.jpg" alt="Shapes" width="300"></span></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_python_code_step_by_step">Python code step by step</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Our application will have input parameter provided from console. We will require:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>path to the image file</p>
+</li>
+<li>
+<p>integer indicating minimum size in pixels for a shape</p>
+</li>
+<li>
+<p>float value between 0 and 1 as a threshold</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In the following block of code we check if user provided all the required parameters and whether they have valid values:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">import sys
+import os.path
+
+def main():
+    if len(sys.argv) != 4:
+        print("Input format: &lt;filepath&gt; &lt;minimum size of detected shape in pixels&gt; &lt;threshold between 0 and 1&gt;")
+        return
+
+    filepath = sys.argv[1]
+    minimum_pixel_size = int(sys.argv[2])
+    threshold = float(sys.argv[3])
+
+    if not os.path.isfile(filepath):
+        print("File does not exist: " + filepath)
+        return
+
+    if minimum_pixel_size &lt; 1:
+        print("Minimum pixel size has to be larger than 1 (probably much larger)")
+        return
+
+    if (threshold &lt; 0) or (threshold &gt; 1):
+        print("Threshold value needs to be between 0 and 1")
+        return
+
+    print("Reading image: " + filename)
+    # rest of the code will go here
+
+if __name__ == "__main__":
+    main()</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_final_code">Final code</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">import sys
+import os.path
+from os import makedirs
+import shutil
+from skimage import io,  color
+from scipy.ndimage.measurements import label, sum
+from skimage.morphology import convex_hull_image
+# import matplotlib.pyplot as plt
+
+
+def main():
+    if len(sys.argv) &lt; 4:
+        print("Input format: &lt;filename&gt; &lt;minimum size of detected shape in pixels&gt; &lt;threshold between 0 and 1&gt;")
+        return
+
+    filename = sys.argv[1]
+    minimum_pixel_size = int(sys.argv[2])
+    threshold = float(sys.argv[3])
+
+    if not os.path.isfile(filename):
+        print("File does not exist: " + filename)
+        return
+
+    if minimum_pixel_size &lt; 1:
+        print("Minimum pixel size has to be larger than 1 (probably much larger)")
+        return
+
+    if (threshold &lt; 0) or (threshold &gt; 1):
+        print("Threshold value needs to be between 0 and 1")
+        return
+
+    print("Reading image: " + filename + " ...")
+    image = io.imread(filename)
+    print("Converting to grayscale...")
+    gray_image = color.rgb2gray(image)
+
+    print("Thresholding image using threshold value: " + str(threshold) + " ...")
+    binary = gray_image &lt; threshold
+
+    print("Labeling all shapes..." )
+    segmented, num_segments = label(binary)
+
+    print("Listing shapes found...")
+
+    directory = os.path.splitext(filename)[0] # functions split path in two: file path and extension
+    if os.path.exists(directory): # if directory with the name the same as file exists
+        shutil.rmtree(directory) # delete it
+
+    makedirs(directory) # create new one
+
+    for i in range(1,num_segments+1):
+        total_pixels_in_shape = sum(segmented == i) # get number of all pixels in shape
+
+        if total_pixels_in_shape &gt; minimum_pixel_size: # if there is enough of them
+            convex_hull = convex_hull_image(segmented == i) # calculate convex hull
+            area = sum(convex_hull) # and get number of pixels inside it
+            print("Shape number: " + str(i) +  " shape area (in pixels): " + str(area))
+
+            # pixels in convex hull are now either 0 or 1
+            convex_hull = convex_hull * 255 # rescale each value so that they are  0 or 255 range (black or white in grayscale)
+            shape_filename = directory + os.path.sep + str(i) + "_area_" + str(area) + ".jpg"
+            io.imsave(shape_filename, convex_hull) # save under given filename
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_the_method_can_be_generalized">How the method can be generalized</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Final thoughts</p>
+</div>
+</div>
+</div>
+        </section>
+
+    
+        <section class="post-comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+          var disqus_shortname = 'xmichaelx'; // required: replace example with your forum shortname
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </section>
+    
+    </article>
+
+</main>
+    <footer class="animated fadeIn" id="footer">
+        <section class="colophon">
+          <section class="copyright">Copyright &copy; <span itemprop="copyrightHolder">xmichaelx&#x27;s recipes</span>. <span rel="license">All Rights Reserved</span>.</section>
+          <section class="poweredby">Published with <a class="icon-ghost" href="http://hubpress.io">HubPress</a></section>
+        </section>
+        <section class="bottom">
+          <section class="attribution">
+            <a href="http://github.com/Reedyn/Saga">Built with <i class="fa fa-heart"></i> and Free and Open-Source Software</a>.
+          </section>
+        </section>
+    </footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();      
+      </script>
+    <script src="//xmichaelx.github.io/themes/Saga/assets/js/scripts.js?v=1.0.0"></script>
+    
+</body>
+</html>
