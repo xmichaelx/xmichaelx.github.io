@@ -19,7 +19,6 @@ Or you can use Anaconda which is a Python distribution that comes with a lot of 
 
 You can check if everything is in place by opening python interpreting and importing some packages:
 
-[[app-listing]]
 [source,python]
 ----
 from skimage import io,  color
@@ -51,9 +50,13 @@ image:shapes.jpg[Shapes,300]
 
 == Python code step by step
 
+step
+step
+
+
 == Final code
 
-[[app-listing]]
+
 [source,python]
 ----
 __author__ = 'CaptainJack & BlackFeathered'
@@ -128,3 +131,5 @@ if __name__ == "__main__":
 
 == How the method can be generalized
 
+
+Final thoughts
