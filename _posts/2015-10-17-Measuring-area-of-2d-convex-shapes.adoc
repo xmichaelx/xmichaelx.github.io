@@ -116,6 +116,32 @@ image:shapes_thresholded.jpg[Shapes thresholded,300]
 
 
 
+[source,python]
+----
+segmented, num_segments = label(binary)
+----
+
+*label* is a function from *scipy.ndimage.measurements* package. 
+
+It assignes unique integer values to continuous patches of non-zero pixels. 
+Number of segments found is stored in *num_segments* variable. 
+New image with shapes labeled is stored in *segmented* variable.
+Labels have values from 1 to *num_segments*.
+
+
+[source,python]
+----
+for i in range(1,num_segments+1):
+    total_pixels_in_shape = sum(segmented == i)
+
+    if total_pixels_in_shape > minimum_pixel_size:
+        convex_hull = convex_hull_image(segmented == i)
+        area = sum(convex_hull)
+----
+
+Next we iterate over each shape value, count the pixels and filter out shapes that don't have enough
+
+
 == Final code
 
 
