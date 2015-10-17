@@ -21,7 +21,6 @@ You can check if everything is in place by opening python interpreting and impor
 
 [[app-listing]]
 [source,python]
-.test.xml
 ----
 from skimage import io,  color
 from scipy.ndimage.measurements import label, sum
@@ -53,6 +52,79 @@ image:shapes.jpg[Shapes,300]
 == Python code step by step
 
 == Final code
+
+[[app-listing]]
+[source,python]
+----
+__author__ = 'CaptainJack & BlackFeathered'
+
+import sys
+import os.path
+from os import makedirs
+import shutil
+from skimage import io,  color
+from scipy.ndimage.measurements import label, sum
+from skimage.morphology import convex_hull_image
+# import matplotlib.pyplot as plt
+
+
+def main():
+    if len(sys.argv) < 4:
+        print("Input format: <filename> <minimum size of detected shape in pixels> <threshold between 0 and 1>")
+        return
+
+    filename = sys.argv[1]
+    minimum_pixel_size = int(sys.argv[2])
+    threshold = float(sys.argv[3])
+
+    if not os.path.isfile(filename):
+        print("File does not exist: " + filename)
+        return
+
+    if minimum_pixel_size < 1:
+        print("Minimum pixel size has to be larger than 1 (probably much larger)")
+        return
+
+    if (threshold < 0) or (threshold > 1):
+        print("Threshold value needs to be between 0 and 1")
+        return
+
+    print("Reading image: " + filename + " ...")
+    image = io.imread(filename)
+    print("Converting to grayscale...")
+    gray_image = color.rgb2gray(image)
+
+    print("Thresholding image using threshold value: " + str(threshold) + " ...")
+    binary = gray_image < threshold
+
+    print("Labeling all shapes..." )
+    segmented, num_segments = label(binary)
+
+    print("Listing shapes found...")
+
+    directory = os.path.splitext(filename)[0] # functions split path in two: file path and extension
+    if os.path.exists(directory): # if directory with the name the same as file exists
+        shutil.rmtree(directory) # delete it
+
+    makedirs(directory) # create new one
+
+    for i in range(1,num_segments+1):
+        total_pixels_in_shape = sum(segmented == i) # get number of all pixels in shape
+
+        if total_pixels_in_shape > minimum_pixel_size: # if there is enough of them
+            convex_hull = convex_hull_image(segmented == i) # calculate convex hull
+            area = sum(convex_hull) # and get number of pixels inside it
+            print("Shape number: " + str(i) +  " shape area (in pixels): " + str(area))
+
+            # pixels in convex hull are now either 0 or 1
+            convex_hull = convex_hull * 255 # rescale each value so that they are  0 or 255 range (black or white in grayscale)
+            shape_filename = directory + os.path.sep + str(i) + "_area_" + str(area) + ".jpg"
+            io.imsave(shape_filename, convex_hull) # save under given filename
+
+
+if __name__ == "__main__":
+    main()
+----
 
 == How the method can be generalized
 
