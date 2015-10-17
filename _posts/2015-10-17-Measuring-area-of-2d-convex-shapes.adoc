@@ -1,6 +1,6 @@
 = Measuring area of 2d convex shapes 
 :published_at: 2015-10-17
-:hp-tags: Blog, Python, image processing, programming
+:hp-tags: python, image processing, area measurement
 
 You can easily measure area of 2d shapes drawn or placed on a A4 sheet. 
 Given few minor constraints you can do it in less than 30 lines of Python code.
