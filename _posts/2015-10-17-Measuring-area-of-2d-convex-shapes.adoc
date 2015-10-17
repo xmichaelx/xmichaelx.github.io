@@ -17,5 +17,32 @@ If you're using Linux or OSX you can probably already have Python. For other two
 On Windows whole procedure is a little bit more tricky. You will have to download Python and then install a lot of dependencies using this repo: http://www.lfd.uci.edu/~gohlke/pythonlibs.
 Or you can use Anaconda which is a Python distribution that comes with a lot of packages installed for you by default (including required ones). You can download it from here: https://www.continuum.io/downloads#_windows
 
+You can check if everything is in place by opening python interpreting and importing some packages:
 
+from skimage import io,  color
+from scipy.ndimage.measurements import label, sum
+from skimage.morphology import convex_hull_image
+
+If everything loads correctly it means we have the libraries we need in place and we can get down to work.
+
+== Input data and some restrictions
+
+We assume that the images we will be processing are scans of white A4 sheets of paper which have following dimensions: 210 mm × 297 mm. 
+This will provide us with a way of converting area from pixel count back to square milimetres depending on the resolution of the scans.
+Another assumption we make is that shapes will be convex. What does that mean for us? 
+It means that we will be able to use convex hulls to compute areas of the found shapes and the shapes won't be too complicated.
+We will also require from the user to specify minimum size of the valid shape in pixels in order to filter out noise in the lighting of sheet.
+Another thing that will be required will be the treshold value between 0 (black) and 1 (white) below which we will consider pixels to be not a part of background.
+
+Below we present some sample images that will be used to test our code (coin and some hand-drawn shapes).
+
+<images here>
+
+
+
+== Python code step by step
+
+== Final code
+
+== How the method can be generalized
 
