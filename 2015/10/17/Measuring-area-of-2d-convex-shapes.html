@@ -33,7 +33,7 @@
     <meta property="og:description" content="You can easily measure area of 2d shapes drawn or placed on a A4 sheet. Given few minor constraints you can do it in less than 30 lines of Python code. Requirements Python 2.7 SciPy Scikit-image If you&amp;#8217;..." />
     <meta property="og:url" content="https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html" />
     <meta property="article:published_time" content="2015-10-16T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-17T21:39:41.227Z" />
+    <meta property="article:modified_time" content="2015-10-17T21:48:26.833Z" />
     <meta property="article:tag" content="Blog" />
     <meta property="article:tag" content="Python" />
     <meta property="article:tag" content="image processing" />
@@ -59,7 +59,7 @@
     "headline": "Measuring area of 2d convex shapes",
     "url": "https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html",
     "datePublished": "2015-10-16T22:00:00.000Z",
-    "dateModified": "2015-10-17T21:39:41.227Z",
+    "dateModified": "2015-10-17T21:48:26.833Z",
     "keywords": "Blog,  Python,  image processing,  programming",
     "description": "You can easily measure area of 2d shapes drawn or placed on a A4 sheet. Given few minor constraints you can do it in less than 30 lines of Python code. Requirements Python 2.7 SciPy Scikit-image If you&amp;#8217;..."
 }
@@ -413,7 +413,32 @@ if __name__ == "__main__":
 <h2 id="_visualising_image_data">Visualising image data</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>At any moment we can save data</p>
+<p>At any moment we can save image data to file. Before we do that we need to rescale image so that pixels are in 0-255 range.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">image = image * 255
+io.imsave("image.jpg", image)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively we can display image using matplotlib, for that we need to import <strong>import matplotlib.pyplot</strong>. Then we can show image in a popup window using following code:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">import matplotlib.pyplot as plt
+image = image * 255
+imgplot = plt.imshow(image)
+plt.show()</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion">Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you have any questions feel free to ask in the comments section.</p>
 </div>
 </div>
 </div>
