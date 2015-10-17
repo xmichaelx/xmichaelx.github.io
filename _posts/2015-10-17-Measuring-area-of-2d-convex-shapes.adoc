@@ -84,12 +84,36 @@ def main():
         print("Threshold value needs to be between 0 and 1")
         return
 
-    print("Reading image: " + filename)
     # rest of the code will go here
     
 if __name__ == "__main__":
     main()
 ----
+
+Once we have a valid input we can begin the fun stuff.
+First we need to load the image and turn it into grayscale:
+
+[source,python]
+----
+image = io.imread(filename)
+gray_image = color.rgb2gray(image)
+----
+
+Variable *gray_image* stores now grayscale image, each pixel has value in range from 0 to 1.
+After this step we can treshold the image using provided treshold value:
+
+[source,python]
+----
+binary = gray_image < threshold
+----
+
+Variable *binary* stores image where pixels have value 1 for shape and 0 for background.
+
+Two images shown above now look like this for threshold value 0.8:
+
+image:grosz_thresholded.jpg[Grosz thresholded,300] 
+image:shapes_thresholded.jpg[Shapes thresholded,300]
+
 
 
 == Final code
