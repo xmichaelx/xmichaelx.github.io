@@ -217,7 +217,7 @@ if __name__ == "__main__":
     main()
 ----
 
-== How the method can be generalized
+== Visualising image data
 
 
-Final thoughts
+At any moment we can save data 
