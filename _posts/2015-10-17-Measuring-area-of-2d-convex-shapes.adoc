@@ -3,19 +3,19 @@
 :hp-tags: Blog, Python, image processing, programming
 
 You can easily measure area of 2d shapes drawn or placed on a A4 sheet. 
-I'll show how given few minor constraints and trade-offs you can do it in less than 30 lines of Python code.
-At the end of tutorial I'll also discuss what you'll need to change in order to generalize this method a bit.
+Given few minor constraints you can do it in less than 30 lines of Python code.
 
 == Requirements
 
 - Python 2.7
-- SciPy
-- Scikit-image
+- link:https://www.scipy.org/install.html[SciPy]
+- link:http://scikit-image.org/download.html[Scikit-image]
 
-If you're using Linux or OSX you can probably already have Python. For other two dependencies you should follow: https://www.scipy.org/install.html and http://scikit-image.org/download.html.
+If you're using Linux or OSX you probably already have Python. For other two dependencies you follow instructions from their homepages.
 
-On Windows whole procedure is a little bit more tricky. You will have to download Python and then install a lot of dependencies using this repo: http://www.lfd.uci.edu/~gohlke/pythonlibs.
-Or you can use Anaconda which is a Python distribution that comes with a lot of packages installed for you by default (including required ones). You can download it from here: https://www.continuum.io/downloads#_windows
+On Windows whole procedure is a little bit more tricky. You will have to download Python and then install a lot of dependencies using this link:http://www.lfd.uci.edu/~gohlke/pythonlibs[repo].
+
+Alternatively you can use Anaconda which is a Python distribution that comes with a lot of packages installed for you by default (including required ones). You can download it from link:https://www.continuum.io/downloads#_windows[here].
 
 You can check if everything is in place by opening python interpreter and importing following packages:
 
@@ -31,17 +31,13 @@ If everything loads correctly it means we have the packages we need in place and
 
 == Input data and some restrictions
 
-We assume that the images we will be processing are scans of white A4 sheets of paper which have following dimensions: 210 mm × 297 mm. 
-This will provide us with a way of converting area from pixel count back to square milimetres depending on the resolution of the scans.
+We assume that shapes are link:https://en.wikipedia.org/wiki/Polygon#Convexity_and_non-convexity[convex]. This will allow us to use convex hulls to compute areas of the found shapes.
 
-Another assumption we make is that shapes will be convex. What does that mean for us? 
-It means that we will be able to use convex hulls to compute areas of the found shapes and the shapes won't be too complicated.
+We will also require user to specify minimum size of the valid shape (in pixels) in order to filter out artifacts produced by uneven illumination.
 
-We will also require from the user to specify minimum size of the valid shape in pixels in order to filter out noise in the lighting of sheet.
+Another required parameter will be the treshold value above which we will consider pixels to be not a part of background. This value is in range 0-1 (0 is black and 1 is white).
 
-Another thing that will be required will be the treshold value between 0 (black) and 1 (white) below which we will consider pixels to be not a part of background.
-
-Below we present some sample images that will be used to test our code (coin and some hand-drawn shapes).
+Below are some sample images that will be used to test the code (coin and some hand-drawn shapes).
 
 image:grosz.jpg[Grosz,300] 
 image:shapes.jpg[Shapes,300]
@@ -50,13 +46,13 @@ image:shapes.jpg[Shapes,300]
 
 == Python code step by step
 
-Our application will have input parameter provided from console. We will require:
+Parameter are provided from console. Script requires:
 
 - path to the image file
 - integer indicating minimum size in pixels for a shape
 - float value between 0 and 1 as a threshold
 
-In the following block of code we check if user provided all the required parameters and whether they have valid values:
+In the following block of code script checks if user provided all the parameters and checks their validity. The code itself is self-explanatory.
 
 [source,python]
 ----
@@ -68,7 +64,7 @@ def main():
         print("Input format: <filepath> <minimum size of detected shape in pixels> <threshold between 0 and 1>")
         return
 
-    filepath = sys.argv[1]
+      filepath = sys.argv[1]
     minimum_pixel_size = int(sys.argv[2])
     threshold = float(sys.argv[3])
 
@@ -84,13 +80,77 @@ def main():
         print("Threshold value needs to be between 0 and 1")
         return
 
-    print("Reading image: " + filename)
     # rest of the code will go here
     
 if __name__ == "__main__":
     main()
 ----
 
+Once script has a valid input we can begin the image processing.
+First script needs to load the image and turn it into grayscale. This is done using link:http://scikit-image.org/docs/dev/api/skimage.io.html#imread[imread] and link:http://scikit-image.org/docs/dev/api/skimage.color.html#rgb2gray[rgb2gray] functions.
+
+[source,python]
+----
+image = io.imread(filename)
+gray_image = color.rgb2gray(image)
+----
+
+Variable *gray_image* stores now grayscale image, each pixel has value in range from 0 to 1.
+Next the script performs tresholding of the image using provided treshold value:
+
+[source,python]
+----
+binary = gray_image < threshold
+----
+
+Variable *binary* stores image where pixels have value 1 for shape and 0 for background.
+
+Two images shown above now look like this for threshold value 0.8:
+
+image:grosz_thresholded.jpg[Grosz thresholded,300] 
+image:shapes_thresholded.jpg[Shapes thresholded,300]
+
+
+[source,python]
+----
+segmented, num_segments = label(binary)
+----
+
+link:http://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.measurements.label.html[label] is a function from *scipy.ndimage.measurements* package. 
+
+It assignes unique integer values to continuous patches of non-zero pixels.
+Number of segments found is stored in *num_segments* variable. New image with shape pixels labeled is stored in *segmented* variable.
+Labels have values from 1 to *num_segments*.
+
+
+[source,python]
+----
+for i in range(1,num_segments+1):
+    total_pixels_in_shape = sum(segmented == i)
+
+    if total_pixels_in_shape > minimum_pixel_size:
+        pass # code for computing convex hull
+----
+
+Next script iterates over each shape found, counts the pixels and filters out shapes that don't have enough pixels (assuming they are artifacts produced by uneven illumination).
+Then for each shape we select its pixels and calculate total area using link:http://scikit-image.org/docs/dev/auto_examples/plot_convex_hull.html[convex_hull_image] function 
+and summing up all the pixels.
+
+
+[source,python]
+----
+convex_hull = convex_hull_image(segmented == i)
+area = sum(convex_hull)
+----
+
+Coin on the first image is a link:https://en.wikipedia.org/wiki/Polish_coins_and_banknotes[polish grosz], which has a diameter of 15,5 mm. Which gives area of 188,692 square milimeters. 
+Using minimum size in pixels = 20 and threshold value = 0.8 we get area of coin roughly equal to 11771 pixels. 
+Using those two values we can compute conversion factor between pixels and square milimetres, 
+for this image one pixel is roughly equal to 0,016 square milimetres.
+
+By using objects with well-known dimensions we can compute conversion factor for other shapes on the image. 
+All we need to do is place a reference object with known or easily computable area.
+ 
 
 == Final code
 
@@ -104,7 +164,6 @@ import shutil
 from skimage import io,  color
 from scipy.ndimage.measurements import label, sum
 from skimage.morphology import convex_hull_image
-# import matplotlib.pyplot as plt
 
 
 def main():
@@ -128,37 +187,18 @@ def main():
         print("Threshold value needs to be between 0 and 1")
         return
 
-    print("Reading image: " + filename + " ...")
     image = io.imread(filename)
-    print("Converting to grayscale...")
     gray_image = color.rgb2gray(image)
-
-    print("Thresholding image using threshold value: " + str(threshold) + " ...")
     binary = gray_image < threshold
-
-    print("Labeling all shapes..." )
     segmented, num_segments = label(binary)
 
-    print("Listing shapes found...")
-
-    directory = os.path.splitext(filename)[0] # functions split path in two: file path and extension
-    if os.path.exists(directory): # if directory with the name the same as file exists
-        shutil.rmtree(directory) # delete it
-
-    makedirs(directory) # create new one
-
     for i in range(1,num_segments+1):
-        total_pixels_in_shape = sum(segmented == i) # get number of all pixels in shape
+        total_pixels_in_shape = sum(segmented == i)
 
-        if total_pixels_in_shape > minimum_pixel_size: # if there is enough of them
-            convex_hull = convex_hull_image(segmented == i) # calculate convex hull
-            area = sum(convex_hull) # and get number of pixels inside it
+        if total_pixels_in_shape > minimum_pixel_size:
+            convex_hull = convex_hull_image(segmented == i)
+            area = sum(convex_hull)
             print("Shape number: " + str(i) +  " shape area (in pixels): " + str(area))
-
-            # pixels in convex hull are now either 0 or 1
-            convex_hull = convex_hull * 255 # rescale each value so that they are  0 or 255 range (black or white in grayscale)
-            shape_filename = directory + os.path.sep + str(i) + "_area_" + str(area) + ".jpg"
-            io.imsave(shape_filename, convex_hull) # save under given filename
 
 
 if __name__ == "__main__":
