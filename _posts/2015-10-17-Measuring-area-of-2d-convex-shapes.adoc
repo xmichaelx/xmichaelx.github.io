@@ -46,9 +46,9 @@ Another thing that will be required will be the treshold value between 0 (black)
 Below we present some sample images that will be used to test our code (coin and some hand-drawn shapes).
 
 
-image::grosz.jpg[]
+image::grosz.jpg[Grosz,300,200]
 
-image::shapes.jpg[]
+image::shapes.jpg[Shapes,300,200]
 
 
 
