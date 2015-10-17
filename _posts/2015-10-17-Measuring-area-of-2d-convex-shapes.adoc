@@ -47,7 +47,6 @@ Below we present some sample images that will be used to test our code (coin and
 
 
 image:grosz.jpg[Grosz,300] 
-
 image:shapes.jpg[Shapes,300]
 
 
