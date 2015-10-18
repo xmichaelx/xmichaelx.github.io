@@ -1,3 +1,36 @@
-= Securing communication using OTR and PGP plugin for Thunderbird
-:published_at: 2015-10-17
-:hp-tags: Blog, C#, database, dbf, legacy, data, import
+= Securing communication using OPENPGP plugins
+:hp-tags: security, im, email, otr, pgp
+
+== How secure are you already?
+
+Gmail or Facebook messages are encrypted before for the transport to company's servers. This is achieved by using *https* protocol (HTTP over TLS). Browser issues a regular HTTP request to the server, which is then encrypted before it's passed to the transport layer (more about TLS can be found link:http://chimera.labs.oreilly.com/books/1230000000545/ch04.html[here]). 
+
+Once the message gets to server it is decrypted and stored in the database, available as a plaintext to company running server. Then when recipient of the message is viewing his inbox, message is retrieved, encrypted and send to him. The thought that company owning the server can access your private data at any moment should make you feel at least a little bit uneasy. 
+
+Most of companies providing free messaging services openly state they're using stored data as input to variety of algorithms designed for creating better ads, spam filters etc. It means that you and your private data coupled with company's algorithms&infrastructure together constitute product they sell to those who pay.footnote:[https://sites.google.com/a/bsn.ie/support-site/security-privacy section *Is Google reading my mail?*] footnote:[Need more citations]
+
+Most big companies providing free messaging are US-based, meaning they're subject to US regulations. Whether they like it or not they are obliged to cooperate with federal agencies and disclose any data they have when the government asks. That's a lot of power that government has and more often than not power breeds abuse. footnote:[http://www.theblot.com/wikileaks-slams-google-over-failure-to-disclose-warrant-7733827] footnote:[Need more citations]
+
+Lastly while company may have policy to not read user messages individual employes may break such policies and use the data for their own ends. footnote:[Need more citations]
+
+
+== End-to-end encryption (E2EE)
+
+
+link:https://en.wikipedia.org/wiki/End-to-end_encryption[End-to-end encryption] allows you to protect your privacy much better. With E2EE you basically encrypt the message yourself and then send it using any other communication channel you used before. It can be decrypted only by the recipient of your message. 
+
+Any other third-party, be it some malicious eavesdropper, you isp, company providing free messaging service or government can see only encrypted data, not the contents themselves.
+
+In this blog post I'll cover one example from E2EE, link:https://en.wikipedia.org/wiki/Pretty_Good_Privacy[PGP] which stands for "pretty good privacy", which is a nice description of what it actually provides.
+
+== How does it works
+
+
+== PGP in Firefox/Chrome
+
+== PGP in Thunderbird
+
+
+
+
+
