@@ -4,26 +4,28 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <title>Measuring area of 2d convex shapes</title>
-    <meta name="description" content="" />
+    <title>Measuring area of 2d convex shapes - xmichaelx&#x27;s recipes</title>
 
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <link rel="shortcut icon" href="//xmichaelx.github.io/themes/ichi/favicon.ico">
+    <meta name="description" content="">
 
-    <script type="text/javascript" src="//xmichaelx.github.io/themes/ichi/assets/js/vendor/fastclick.js?v=1.0.0"></script>
-    <script type="text/javascript" src="//xmichaelx.github.io/themes/ichi/assets/js/vendor/modernizr.js?v=1.0.0"></script>
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Measuring area of 2d convex shapes">
+    <meta name="twitter:description" content="">
 
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Measuring area of 2d convex shapes">
+    <meta property="og:description" content="">
 
-    <link rel="stylesheet" type="text/css" href="//xmichaelx.github.io/themes/ichi/assets/css/normalize.css?v=1.0.0" />
-    <link rel="stylesheet" type="text/css" href="//xmichaelx.github.io/themes/ichi/assets/css/foundation.min.css?v=1.0.0" />
-    <!--[if lte IE 8]>
-        <link rel="stylesheet" type="text/css" href="//xmichaelx.github.io/themes/ichi/assets/css/outdatedBrowser.min.css?v=1.0.0">
-    <![endif]-->
-    <link rel="stylesheet" type="text/css" href="//xmichaelx.github.io/themes/ichi/assets/fonts/foundation-icons/foundation-icons.css?v=1.0.0" />
-    <link rel="stylesheet" type="text/css" href="//xmichaelx.github.io/themes/ichi/assets/css/styles.css?v=1.0.0" />
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:300,700,400|Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic" />
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="/apple-touch-icon-precomposed.png" rel="apple-touch-icon">
+
+    <link rel="stylesheet" type="text/css" href="//xmichaelx.github.io/themes/uno/assets/css/uno.css?v=1.0.0" />
 
     <link rel="canonical" href="https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html" />
     
@@ -33,11 +35,10 @@
     <meta property="og:description" content="You can easily measure area of 2d shapes drawn or placed on a A4 sheet. Given few minor constraints you can do it in less than 30 lines of Python code. Requirements Python 2.7 SciPy Scikit-image If you&amp;#8217;..." />
     <meta property="og:url" content="https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html" />
     <meta property="article:published_time" content="2015-10-16T22:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-17T21:30:38.248Z" />
-    <meta property="article:tag" content="Blog" />
-    <meta property="article:tag" content="Python" />
+    <meta property="article:modified_time" content="2015-10-20T11:16:06.952Z" />
+    <meta property="article:tag" content="python" />
     <meta property="article:tag" content="image processing" />
-    <meta property="article:tag" content="programming" />
+    <meta property="article:tag" content="area measurement" />
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Measuring area of 2d convex shapes" />
@@ -59,8 +60,8 @@
     "headline": "Measuring area of 2d convex shapes",
     "url": "https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html",
     "datePublished": "2015-10-16T22:00:00.000Z",
-    "dateModified": "2015-10-17T21:30:38.248Z",
-    "keywords": "Blog,  Python,  image processing,  programming",
+    "dateModified": "2015-10-20T11:16:06.952Z",
+    "keywords": "python,  image processing,  area measurement",
     "description": "You can easily measure area of 2d shapes drawn or placed on a A4 sheet. Given few minor constraints you can do it in less than 30 lines of Python code. Requirements Python 2.7 SciPy Scikit-image If you&amp;#8217;..."
 }
     </script>
@@ -68,85 +69,85 @@
     <meta name="generator" content="Ghost ?" />
     <link rel="alternate" type="application/rss+xml" title="xmichaelx&#x27;s recipes" href="https://xmichaelx.github.io/rss" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+
 </head>
-<body class="post-template tag-Blog tag-Python tag-image-processing tag-programming">
+<body class="post-template tag-python tag-image-processing tag-area-measurement no-js">
 
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdate" href="http://outdatedbrowser.com/">Update my browser now</a></p>
-</div>
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
 
-<nav class="top-bar hide-for-large-up" data-topbar >
-  <ul class="title-area">
-    <li class="name">
-
-    </li>
-    <li class="home"><a class="fi-home" href="https://xmichaelx.github.io"></a></li>
-    <li class="toggle-topbar"><a href="#" id="trigger-overlay" class="fi-list"></a></li>
-  </ul>
-
-<div class="overlay overlay-scale">
-    <button type="button" class="overlay-close">Close</button>
-    <nav>
-        <ul>
-            <li><a href="https://xmichaelx.github.io">Home</a></li>
-        </ul>
-    </nav>
-</div>
-
-</nav>
-
-<div class="row">
-
-<div class="small-16 medium-16 large-4 columns right head-area" >
-
-<header class="site-head">
-    <div class="vertical">
-        <div class="site-head-content inner">
-            <ul class="side-nav blog-menu show-for-large-up">
-                <li><a class="fi-home" href="https://xmichaelx.github.io"></a></li>
-                <li><a class="fi-torso" href="https://xmichaelx.github.io/about"></a></li>
-                <li><a class="fi-mail" href="https://xmichaelx.github.io/contact"></a></li>
-            </ul>
-            
-            <h1 class="blog-title">xmichaelx&#x27;s recipes</h1>
-            <hr>
-            <p class="blog-description">Blog featuring tutorials, recipes and other goodies for programmers</p>
-            <div class="blog-network">
-<!--                 <a href="#" class="fi-social-pinterest"></a>
-                <a href="#" class="fi-social-linkedin"></a>
-                <a href="#" class="fi-social-behance"></a>
-                <a href="#" class="fi-social-deviant-art"></a>
-                <a href="#" class="fi-social-dribbble"></a>
-                <a href="#" class="fi-social-flickr"></a>
-                <a href="#" class="fi-social-github"></a>
-                <a href="#" class="fi-social-skype"></a>
-                <a href="#" class="fi-social-snapchat"></a>
-                <a href="#" class="fi-social-steam"></a>
-                <a href="#" class="fi-social-xbox"></a>
-                <a href="#" class="fi-social-reddit"></a> -->
-            </div>
-        </div>
-    </div>
-</header>
-
-</div>
-
-
-<div class="small-16 medium-16 large-12 columns main-column left">
+    <header class="panel-cover panel-cover--collapsed " >
+      <div class="panel-main">
     
+        <div class="panel-main__inner panel-inverted">
+        <div class="panel-main__content">
+    
+            <h1 class="panel-cover__title panel-title"><a href="https://xmichaelx.github.io" title="link to homepage for xmichaelx&#x27;s recipes">xmichaelx&#x27;s recipes</a></h1>
+            <hr class="panel-cover__divider" />
+            <p class="panel-cover__description">Blog featuring tutorials, recipes and other goodies for programmers</p>
+            <hr class="panel-cover__divider panel-cover__divider--secondary" />
+    
+            <div class="navigation-wrapper">
+    
+              <nav class="cover-navigation cover-navigation--primary">
+                <ul class="navigation">
+                  <li class="navigation__item"><a href="https://xmichaelx.github.io/#blog" title="link to xmichaelx&#x27;s recipes blog" class="blog-button">Blog</a></li>
+                </ul>
+              </nav>
+    
+              
+              
+              <nav class="cover-navigation navigation--social">
+                <ul class="navigation">
+              
+              
+              
+              
+              
+              
+              
+              
+              
+                  <!-- Email -->
+                  <li class="navigation__item">
+                    <a href="mailto:michal.drzal@sybillatechnologies.com" title="Email michal.drzal@sybillatechnologies.com">
+                      <i class='icon icon-mail'></i>
+                      <span class="label">Email</span>
+                    </a>
+                  </li>
+              
+                </ul>
+              </nav>
+              
+    
+            </div>
+    
+          </div>
+    
+        </div>
+    
+        <div class="panel-cover--overlay"></div>
+      </div>
+    </header>
 
-<main class="content" role="main">
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            
 
-    <article class="post tag-Blog tag-Python tag-image-processing tag-programming">
+  <article class="post-container post-container--single">
 
+    <header class="post-header">
+      <div class="post-meta">
+        <time datetime="17 Oct 2015" class="post-meta__date date">17 Oct 2015</time> &#8226; <span class="post-meta__tags tags">on <a href="https://xmichaelx.github.io/tag/python">python</a>, <a href="https://xmichaelx.github.io/tag/image-processing"> image processing</a>, <a href="https://xmichaelx.github.io/tag/area-measurement"> area measurement</a></span>
+        <span class="post-meta__author author"><img src="https://avatars.githubusercontent.com/u/1004852?v=3" alt="profile image for Michał Drzał" class="avatar post-meta__avatar" /> by Michał Drzał</span>
+      </div>
+      <h1 class="post-title">Measuring area of 2d convex shapes</h1>
+    </header>
 
-            <h1 class="post-title">Measuring area of 2d convex shapes</h1>
-
-            <span class="post-meta label"><time datetime="2015-10-17">17 Oct 2015</time></span>
-
-            <section class="post-content">
-                <div id="preamble">
+    <section class="post tag-python tag-image-processing tag-area-measurement">
+      <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>You can easily measure area of 2d shapes drawn or placed on a A4 sheet.
@@ -332,10 +333,21 @@ area = sum(convex_hull)</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Coin on the first image is a <a href="https://en.wikipedia.org/wiki/Polish_coins_and_banknotes">polish grosz</a>, which has a diameter of 15,5 mm. Which gives area of 188,692 square milimeters.
+<p>Convex hulls generated from shapes.jpg (convex hull for grosz.jpg is the same as tresholded image):</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="/images/8_area_91034.jpg" alt="1st shape" width="300"></span>
+<span class="image"><img src="/images/9_area_244421.jpg" alt="2nd shape" width="300"></span></p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="/images/12_area_20360.jpg" alt="3rd shape" width="300"></span>
+<span class="image"><img src="/images/15_area_116402.jpg" alt="4th shape" width="300"></span></p>
+</div>
+<div class="paragraph">
+<p>Coin on the first image is a <a href="https://en.wikipedia.org/wiki/Polish_coins_and_banknotes">polish 2 grosze</a>, coin which has a diameter of 17,5 mm. Which gives area of 240,528 square milimeters.
 Using minimum size in pixels = 20 and threshold value = 0.8 we get area of coin roughly equal to 11771 pixels.
 Using those two values we can compute conversion factor between pixels and square milimetres,
-for this image one pixel is roughly equal to 0,016 square milimetres.</p>
+for this image one pixel is roughly equal to 0,02 square milimetres.</p>
 </div>
 <div class="paragraph">
 <p>By using objects with well-known dimensions we can compute conversion factor for other shapes on the image.
@@ -399,79 +411,60 @@ if __name__ == "__main__":
 </div>
 </div>
 <div class="sect1">
-<h2 id="_how_the_method_can_be_generalized">How the method can be generalized</h2>
+<h2 id="_visualising_image_data">Visualising image data</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Final thoughts</p>
+<p>At any moment we can save image data to file. Before we do that we need to rescale image so that pixels are in 0-255 range.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">image = image * 255
+io.imsave("image.jpg", image)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively we can display image using matplotlib, for that we need to import <strong>import matplotlib.pyplot</strong>. Then we can show image in a popup window using following code:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">import matplotlib.pyplot as plt
+image = image * 255
+imgplot = plt.imshow(image)
+plt.show()</code></pre>
 </div>
 </div>
 </div>
-                        <aside class="tags fi-pricetag-multiple">Posted on <a href="https://xmichaelx.github.io/tag/Blog">Blog</a>, <a href="https://xmichaelx.github.io/tag/Python"> Python</a>, <a href="https://xmichaelx.github.io/tag/image-processing"> image processing</a>, <a href="https://xmichaelx.github.io/tag/programming"> programming</a></aside>
-            </section>
-            <hr>
-            <footer class="post-footer">
+</div>
+    </section>
 
-                <section class="share">
-                    <h4>Liked this post ? Share it.</h4>
-                    <a class="fi-social-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html"
-                        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-                    </a>
-                    <a class="fi-social-twitter" href="https://twitter.com/share?text=Measuring%20area%20of%202d%20convex%20shapes&amp;url=https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html"
-                        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-                    </a>
-                    <a class="fi-social-google-plus" href="https://plus.google.com/share?url=https://xmichaelx.github.io/2015/10/17/Measuring-area-of-2d-convex-shapes.html"
-                       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-                    </a>
-                </section>
+  </article>
 
-                <section class="author">
-                    <header>
-                        <span>About the author</span>
-                    </header>
-                    <section>
-                        <h4>Michał Drzał</h4>
-                        <img src="https://avatars.githubusercontent.com/u/1004852?v=3">
-                        
-                        
-                    </section>
-                    <footer>
-                         <p></p>
-                    </footer>
-                </section>
-
-        <div class="clearfix"></div>
-                    <hr>
-
-            </footer>
-
-        <h3 class="title-disqus"><span class="fi-comments"></span>Discussions</h3>
-
-
-
-
-        <section class="post-comments">
-          <div id="disqus_thread"></div>
-          <script type="text/javascript">
-          var disqus_shortname = 'xmichaelx'; // required: replace example with your forum shortname
-          /* * * DON'T EDIT BELOW THIS LINE * * */
-          (function() {
+  
+  <section class="post-comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'xmichaelx'; // required: replace example with your forum shortname
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-          })();
-          </script>
-          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-        </section>
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+  
 
 
-    </article>
 
-</main>
-
-</div>
-
-</div>
+            <footer class="footer">
+                <span class="footer__copyright">&copy; 2015. All rights reserved.</span>
+                <span class="footer__copyright"><a href="http://uno.daleanthony.com" title="link to page for Uno Ghost theme">Uno theme</a> by <a href="http://daleanthony.com" title="link to website for Dale-Anthony">Dale-Anthony</a></span>
+                <span class="footer__copyright">Proudly published with <a href="http://hubpress.io" title="link to Hubpress website">Hubpress</a></span>
+            </footer>
+        </div>
+    </div>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
       <script type="text/javascript">
@@ -486,14 +479,8 @@ if __name__ == "__main__":
         hljs.initHighlightingOnLoad();      
       </script>
 
-    <!--[if lte IE 8]>
-        <script type="text/javascript" src="//xmichaelx.github.io/themes/ichi/assets/js/outdatedBrowser.min.js?v=1.0.0"></script>
-    <![endif]-->
-    <script type="text/javascript" src="//xmichaelx.github.io/themes/ichi/assets/js/min/built.js?v=1.0.0"></script>
-
-    <script>
-      $(document).foundation();
-    </script>
+    <script type="text/javascript" src="//xmichaelx.github.io/themes/uno/assets/js/main.js?v=1.0.0"></script>
+    
 
 </body>
 </html>

@@ -1,6 +1,6 @@
 = Measuring area of 2d convex shapes 
 :published_at: 2015-10-17
-:hp-tags: Blog, Python, image processing, programming
+:hp-tags: python, image processing, area measurement
 
 You can easily measure area of 2d shapes drawn or placed on a A4 sheet. 
 Given few minor constraints you can do it in less than 30 lines of Python code.
@@ -143,10 +143,22 @@ convex_hull = convex_hull_image(segmented == i)
 area = sum(convex_hull)
 ----
 
-Coin on the first image is a link:https://en.wikipedia.org/wiki/Polish_coins_and_banknotes[polish grosz], which has a diameter of 15,5 mm. Which gives area of 188,692 square milimeters. 
+
+Convex hulls generated from shapes.jpg (convex hull for grosz.jpg is the same as tresholded image):
+
+
+image:8_area_91034.jpg[1st shape,300] 
+image:9_area_244421.jpg[2nd shape,300] 
+
+
+image:12_area_20360.jpg[3rd shape,300]
+image:15_area_116402.jpg[4th shape,300]
+
+
+Coin on the first image is a link:https://en.wikipedia.org/wiki/Polish_coins_and_banknotes[polish 2 grosze], coin which has a diameter of 17,5 mm. Which gives area of 240,528 square milimeters. 
 Using minimum size in pixels = 20 and threshold value = 0.8 we get area of coin roughly equal to 11771 pixels. 
 Using those two values we can compute conversion factor between pixels and square milimetres, 
-for this image one pixel is roughly equal to 0,016 square milimetres.
+for this image one pixel is roughly equal to 0,02 square milimetres.
 
 By using objects with well-known dimensions we can compute conversion factor for other shapes on the image. 
 All we need to do is place a reference object with known or easily computable area.
@@ -205,7 +217,23 @@ if __name__ == "__main__":
     main()
 ----
 
-== How the method can be generalized
+== Visualising image data
 
 
-Final thoughts
+At any moment we can save image data to file. Before we do that we need to rescale image so that pixels are in 0-255 range.
+
+[source,python]
+----
+image = image * 255 
+io.imsave("image.jpg", image)
+----
+
+Alternatively we can display image using matplotlib, for that we need to import *import matplotlib.pyplot*. Then we can show image in a popup window using following code:
+
+[source,python]
+----
+import matplotlib.pyplot as plt
+image = image * 255 
+imgplot = plt.imshow(image)
+plt.show()
+----
