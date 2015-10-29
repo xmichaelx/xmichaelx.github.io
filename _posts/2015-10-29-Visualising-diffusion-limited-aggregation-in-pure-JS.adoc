@@ -1,5 +1,5 @@
 = Visualising diffusion-limited aggregation in pure JS
-:published_at: 2015-10-17
+:published_at: 2015-10-29
 :hp-tags: Blog, javascript, complex systems, visualisation, dla
 
 == What is diffusion-limited aggregation?
