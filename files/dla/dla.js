@@ -1,13 +1,23 @@
 window.onload = function () { 
-	var initialParameters = { width : 800, height:800, particle_density:0.25, stopping_fraction:0.5};
+	var initialParameters = { width : 800, height : 800, particle_density : 0.25, stopping_fraction : 0.5 };
 	document.getElementById("parameters").value = JSON.stringify(initialParameters);
 };
 
-var CLUSTER = 1;
+var CLUSTER_SIZE = 0;
+var background_color = [50,50,50];
+var particle_color = [52,152,219];
+
+function colormap(v) {
+	return [ 
+		255 * ((v <= 0.5) ? v * 2.0 : 1.0), // red 
+		255 * ((v > 0.25) ? ((v < 0.75) ? (v - 0.25) * 2.0 : 1.0) : 0.0), // green
+		255 * ((v > 0.5) ? (v - 0.5) * 2.0 : 0.0) // blue
+	];
+}
 
 function createField(width, height) {
-	var field = { width:width, height:height, field: new Uint8Array(width * height)	};
-	field.field[Math.floor(width / 2) + Math.floor(height / 2) * width] = CLUSTER;
+	var field = { width:width, height:height, field: new Uint32Array(width * height)	};
+	field.field[Math.floor(width / 2) + Math.floor(height / 2) * width] = 1;
 	return field;
 }
 
@@ -27,7 +37,7 @@ function resetParticle(particles, field, i) {
 function createParticles(field, count) {
 	var particles = {
 		count: count,
-		stuck: new Uint8Array(count),
+		stuck: new Uint32Array(count),
 		x: new Uint16Array(count), 
 		y: new Uint16Array(count), 
 	};
@@ -72,25 +82,27 @@ function updateParticle(particles,field, i) {
     particles.y[i] = y;
     
 	if (isNextToCluster(particles, field, i)) {
-		particles.stuck[i] = CLUSTER;
-		field.field[y*field.width + x] = CLUSTER;
+		particles.stuck[i] = ++CLUSTER_SIZE;
+		field.field[y*field.width + x] = CLUSTER_SIZE;
 	}
 }
 
-
-function render(field, canvas, particles) {
+function render(field, canvas, particles, stopping_fraction) {
 	var i = particles.count;
 	while (i--) {
     	var index = (particles.y[i] * field.width + particles.x[i]) * 4;
-    	var isStuck = particles.stuck[i];
-    	canvas[index] = isStuck ? 231 : 52; // red
-        canvas[++index] = isStuck ? 76 : 152; // green
-        canvas[++index] = isStuck ? 60 : 219; // blue
+
+    	var v = Math.sqrt(particles.stuck[i] / (stopping_fraction * particles.count));
+    	var color = v > 0 ? colormap(v) : particle_color;
+    	canvas[index] = color[0]; // red
+        canvas[++index] = color[1]; // green
+        canvas[++index] = color[2] ; // blue
         canvas[++index] = 255; // alpha 
 	}
 }
 
 function start() {
+	CLUSTER_SIZE = 0;
 	var parameters = JSON.parse(document.getElementById("parameters").value);
 	var canvas = document.getElementById("canvas");
 	canvas.width = parameters.width;
@@ -102,32 +114,41 @@ function start() {
 	var particles = createParticles(field, particleCount);
 
 	var imageData = ctx.getImageData(0, 0, field.width, field.height);
+	
 	var clearCanvas = new Uint8Array(4*field.width * field.height)
+	var i = field.width * field.height;
+	while (i--) {
+		var index = 4*i;
+    	clearCanvas[index] = background_color[0]; // red
+        clearCanvas[++index] = background_color[1]; // green
+        clearCanvas[++index] = background_color[2]; // blue
+        clearCanvas[++index] = 255; // alpha 
+	}
 	
 	function step() {
 		var j = particles.count;
 		while (j--) {
-			if (particles.stuck[j] != CLUSTER) {
+			if (particles.stuck[j] < 1) {
 				updateParticle(particles, field, j);
 			}
 		}	
 		
 		imageData.data.set(clearCanvas);
-		render(field, imageData.data, particles);
+		render(field, imageData.data, particles,parameters.stopping_fraction);
 		
 		ctx.putImageData(imageData, 0, 0);
 		
 		var idle = 0;
 		var i = particles.count;
 		while (i--) 
-			idle += particles.stuck[i];
+			idle += (particles.stuck[i] > 0);
 
 		if (idle < parameters.stopping_fraction * particles.count) {
 			requestAnimationFrame(step);
 		}
 		else {
 			imageData.data.set(clearCanvas);
-			render(field, imageData.data, particles);
+			render(field, imageData.data, particles,parameters.stopping_fraction);
 			ctx.putImageData(imageData, 0, 0);
 		}
 	}
