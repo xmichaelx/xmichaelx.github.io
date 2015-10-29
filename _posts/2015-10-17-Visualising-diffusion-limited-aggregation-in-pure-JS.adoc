@@ -263,7 +263,7 @@ You can download finished visualisation link:../files/dla/dla.zip[here].
 You can view live version link:../files/dla/dla.html[here].
 
 
-== Sample images
+== Sample image
 
-
+image:dla.png[Grosz,300] 
 
