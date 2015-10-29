@@ -257,10 +257,8 @@ var parameters = JSON.parse(document.getElementById("parameters").value);
 ----
 
 
-You can download finished visualisation link:../files/dla/dla.zip[here]. 
+You can download finished visualisation link:https://github.com/xmichaelx/xmichaelx.github.io/tree/master/files/dla[here]. 
 
-
-You can view live version link:../files/dla/dla.html[here].
 
 
 == Sample image
