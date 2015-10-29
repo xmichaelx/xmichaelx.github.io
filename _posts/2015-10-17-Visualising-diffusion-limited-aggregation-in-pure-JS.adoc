@@ -1,0 +1,269 @@
+= Visualising diffusion-limited aggregation in pure JS
+:published_at: 2015-10-17
+:hp-tags: Blog, javascript, complex systems, visualisation, dla
+
+== What is diffusion-limited aggregation?
+
+link:https://en.wikipedia.org/wiki/Diffusion-limited_aggregation[Diffusion-limited aggregation] (DLA) is the process whereby particles undergoing a random walk due to Brownian motion cluster together to form aggregates of such particles. 
+
+image:dla.JPG[DLA,300] 
+
+Above we can see a DLA cluster grown from a copper sulfate solution in an electrodeposition cell.
+
+== Model
+
+To visualise DLA in browser we need to agree to some model. Let's assume that:
+
+1. Each particle performs a random walk in our system.
+2. When particle is next to a cluster it sticks to it.
+3. We start with a simple seed cluster consisting of one particle in the center of the visualisation.
+
+Model is dead simple. Let's see how we can implement it.
+
+== View
+
+We would like to visualise evolution of our algorithm and see how the aggregation happens. 
+For that purpose we will use canvas HTML canvas element which provides us with a nice bitmap to draw on.
+
+We will also need an input for out algorithm parameters and a button to start simulation. Here's the complete markup for the view:
+
+[source,html]
+----
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Diffusion-Limited aggregation</title>
+	<meta name="description" content="Diffusion-Limited aggregation">
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<script src="dla.js"></script>
+  </head>
+  <body>
+	  <div class="container">
+	  	<h1>Diffusion-Limited aggregation</h1>
+	    <div class="row">
+			<div class="col-xs-12">
+				<div class="input-group">
+					<span class="input-group-addon">Parameters</span>
+					<input type="text" class="form-control" id="parameters">
+					<span class="input-group-btn">
+				        <button class="btn btn-default" onclick="start()">Start</button>
+				    </span>
+				</div>
+			</div>
+	    </div>
+	    <div class="row">
+	    	<div class="col-xs-12">
+	    		<canvas class="img-thumbnail" id="canvas"></canvas>
+	    	</div>
+    	</div>
+	  </div> 
+  </body>
+</html>
+----
+
+
+We've used a little bit of Bootstrap CSS to make things look better. 
+We will put our code in dla.js script. And we will be starting our simulation using start function invoked by button click. 
+
+
+== Code
+
+
+First we need to to create initial parameters and fill the input with them. We need to do it after the DOM is loaded:
+
+[source,javascript]
+----
+window.onload = function () { 
+	var initialParameters = { width : 800, height:800, particle_density:0.25, stopping_fraction:0.5};
+	document.getElementById("parameters").value = JSON.stringify(initialParameters);
+};
+----
+
+We have four parameters: 
+
+- width and height of our simulation
+- particle_density indicating how many particles will we used ( particle_density x width x height )
+- stopping_fraction as we need to specify some stopping condition for our simulation, we will stop when specified fraction of all particles will be part of the cluster
+
+First we need to create field where particles will be moving:
+
+
+[source,javascript]
+----
+var CLUSTER = 1;
+
+function createField(width, height) {
+	var field = { width:width, height:height, field: new Uint8Array(width * height)	};
+	field.field[Math.floor(width / 2) + Math.floor(height / 2) * width] = CLUSTER;
+	return field;
+}
+----
+
+
+We will use a lot of typed arrays in our project. Elements that are part of the cluster will be have *CLUSTER* value.
+
+Next we need to create particles and initialize their positions. 
+
+[source,javascript]
+----
+function resetParticle(particles, field, i) {
+	var x = Math.floor(Math.random() * field.width);
+	var y = Math.floor(Math.random() * field.height);
+
+	while(field[y*field.width+x]) {
+		x = Math.floor(Math.random() * field.width);
+		y = Math.floor(Math.random() * field.height);
+	}
+
+	particles.x[i] = x;
+	particles.y[i] = y;
+}
+
+function createParticles(field, count) {
+	var particles = {
+		count: count,
+		stuck: new Uint8Array(count),
+		x: new Uint16Array(count), 
+		y: new Uint16Array(count), 
+	};
+
+	var i = count;
+	while (i--) 
+		resetParticle(particles, field, i);
+
+	return particles;
+}
+----
+
+Reset function generates new position for the particle until it's a position that is not occupied by any cluster. We create three arrays, one for storing x coordinates of the particles, one for storing y coordinates of the particles and storing for the flag indicating whether the particle is stuck in a cluster.
+
+Then we need a function that will perform random walk:
+
+
+[source,javascript]
+----
+function updateParticle(particles,field, i) {
+	var xmove = Math.random();
+	var ymove = Math.random();
+	var x = particles.x[i] + (xmove > 2/3 ? 1 : xmove > 1/3 ? 0 : -1);
+	var y = particles.y[i] + (ymove > 2/3 ? 1 : ymove > 1/3 ? 0 : -1);
+
+	if ( (x < 0) || (y < 0) || (x >= field.width) || (y >= field.height)) {
+		resetParticle(particles, field, i);
+	}
+
+    particles.x[i] = x;
+    particles.y[i] = y;
+    
+	if (isNextToCluster(particles, field, i)) {
+		particles.stuck[i] = CLUSTER;
+		field.field[y*field.width + x] = CLUSTER;
+	}
+}
+----
+
+In first two lines we find new place for the particle by randomly moving it in any of 8 direction or not moving it all (with equal probability = 1/9). Then if particle ventured out of our field we reset its position.
+
+If new position is a valid one we check if particle is next to a cluster:
+
+[source,javascript]
+----
+function isNextToCluster(particles, field, i) {
+	var cx = particles.x[i], cy = particles.y[i];
+	var lx = cx - 1, rx = cx + 1;
+	var ty = cy - 1, by = cy + 1;
+
+    // if we are at boundary
+	if (lx < 0 || rx >= field.width ||  ty < 0 || by >= field.height) {
+		return false;
+	}
+		
+	cy *= field.width;     
+	by *= field.width;     
+	ty *= field.width;
+
+	// the check if we have neighour
+	return field.field[cx + ty] || field.field[lx + cy] || field.field[rx + cy] || field.field[cx + by] || 
+		field.field[lx + ty] || field.field[lx + by] ||  field.field[rx + ty] || field.field[rx + by];
+}
+----
+
+This is pretty much all the logic we need. The rest of the code simply renders state every frame:
+
+
+[source,javascript]
+----
+function render(field, canvas, particles) {
+	var i = particles.count;
+	while (i--) {
+    	var index = (particles.y[i] * field.width + particles.x[i]) * 4;
+    	var isStuck = particles.stuck[i];
+    	canvas[index] = isStuck ? 231 : 52; // red
+        canvas[++index] = isStuck ? 76 : 152; // green
+        canvas[++index] = isStuck ? 60 : 219; // blue
+        canvas[++index] = 255; // alpha 
+	}
+}
+----
+
+And lastly the start function triggered by button:
+
+
+[source,javascript]
+----
+var parameters = JSON.parse(document.getElementById("parameters").value);
+	var canvas = document.getElementById("canvas");
+	canvas.width = parameters.width;
+	canvas.height = parameters.height;
+	var ctx = canvas.getContext('2d');
+	
+	var field = createField(parameters.width, parameters.height);
+	var particleCount = Math.floor(parameters.width * parameters.height * parameters.particle_density);
+	var particles = createParticles(field, particleCount);
+
+	var imageData = ctx.getImageData(0, 0, field.width, field.height);
+	var clearCanvas = new Uint8Array(4*field.width * field.height)
+	
+	function step() {
+		var j = particles.count;
+		while (j--) {
+			if (particles.stuck[j] != CLUSTER) {
+				updateParticle(particles, field, j);
+			}
+		}	
+		
+		imageData.data.set(clearCanvas);
+		render(field, imageData.data, particles);
+		
+		ctx.putImageData(imageData, 0, 0);
+		
+		var idle = 0;
+		var i = particles.count;
+		while (i--) 
+			idle += particles.stuck[i];
+
+		if (idle < parameters.stopping_fraction * particles.count) {
+			requestAnimationFrame(step);
+		}
+		else {
+			imageData.data.set(clearCanvas);
+			render(field, imageData.data, particles);
+			ctx.putImageData(imageData, 0, 0);
+		}
+	}
+
+	requestAnimationFrame(step);
+----
+
+
+You can download finished visualisation link:../files/dla/dla.zip[here]. 
+
+
+You can view live version link:../files/dla/dla.html[here].
+
+
+== Sample images
+
+
+
