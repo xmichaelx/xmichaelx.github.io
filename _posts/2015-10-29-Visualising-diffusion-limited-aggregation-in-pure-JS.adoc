@@ -18,7 +18,7 @@ To visualise DLA in browser we need to agree to some model. Let's assume that:
 2. When particle is next to a cluster it sticks to it.
 3. We start with a simple seed cluster consisting of one particle in the center of the visualisation.
 
-Model is dead simple. Let's see how we can implement it.
+Model is dead simple. Let's see how we can implement it and generate some pretty pictures.
 
 == View
 
@@ -86,16 +86,35 @@ We have four parameters:
 - particle_density indicating how many particles will we used ( particle_density x width x height )
 - stopping_fraction as we need to specify some stopping condition for our simulation, we will stop when specified fraction of all particles will be part of the cluster
 
-First we need to create field where particles will be moving:
+First we need to create some default colors we will use:
+
+[source,javascript]
+----
+var background_color = [50,50,50]; // dark gray
+var particle_color = [52,152,219]; // ligh blue
+
+// colormap which converts value from the 0..1 range into a color
+// it looks like a heatmap
+function colormap(v) {
+	return [ 
+		255 * ((v <= 0.5) ? v * 2.0 : 1.0), // red 
+		255 * ((v > 0.25) ? ((v < 0.75) ? (v - 0.25) * 2.0 : 1.0) : 0.0), // green
+		255 * ((v > 0.5) ? (v - 0.5) * 2.0 : 0.0) // blue
+	];
+}
+----
+
+
+Next we need to create field where particles will be moving:
 
 
 [source,javascript]
 ----
-var CLUSTER = 1;
+var CLUSTER_SIZE = 0;
 
 function createField(width, height) {
-	var field = { width:width, height:height, field: new Uint8Array(width * height)	};
-	field.field[Math.floor(width / 2) + Math.floor(height / 2) * width] = CLUSTER;
+	var field = { width:width, height:height, field: new Uint32Array(width * height) };
+	field.field[Math.floor(width / 2) + Math.floor(height / 2) * width] = 1;
 	return field;
 }
 ----
@@ -123,7 +142,7 @@ function resetParticle(particles, field, i) {
 function createParticles(field, count) {
 	var particles = {
 		count: count,
-		stuck: new Uint8Array(count),
+		stuck: new Uint32Array(count),
 		x: new Uint16Array(count), 
 		y: new Uint16Array(count), 
 	};
@@ -157,8 +176,8 @@ function updateParticle(particles,field, i) {
     particles.y[i] = y;
     
 	if (isNextToCluster(particles, field, i)) {
-		particles.stuck[i] = CLUSTER;
-		field.field[y*field.width + x] = CLUSTER;
+		particles.stuck[i] = ++CLUSTER_SIZE;
+		field.field[y*field.width + x] = CLUSTER_SIZE;
 	}
 }
 ----
@@ -189,79 +208,45 @@ function isNextToCluster(particles, field, i) {
 }
 ----
 
-This is pretty much all the logic we need. The rest of the code simply renders state every frame:
+This is pretty much all the logic we need. The rendering function looks like this:
 
 
 [source,javascript]
 ----
-function render(field, canvas, particles) {
+function render(field, canvas, particles, stopping_fraction) {
 	var i = particles.count;
 	while (i--) {
     	var index = (particles.y[i] * field.width + particles.x[i]) * 4;
-    	var isStuck = particles.stuck[i];
-    	canvas[index] = isStuck ? 231 : 52; // red
-        canvas[++index] = isStuck ? 76 : 152; // green
-        canvas[++index] = isStuck ? 60 : 219; // blue
+
+    	var v = Math.sqrt(particles.stuck[i] / (stopping_fraction * particles.count));
+    	var color = v > 0 ? colormap(v) : particle_color;
+    	canvas[index] = color[0]; // red
+        canvas[++index] = color[1]; // green
+        canvas[++index] = color[2] ; // blue
         canvas[++index] = 255; // alpha 
 	}
 }
 ----
 
-And lastly the start function triggered by button:
+The start function glues together functions above and triggers render function every frame.
 
 
-[source,javascript]
-----
-var parameters = JSON.parse(document.getElementById("parameters").value);
-	var canvas = document.getElementById("canvas");
-	canvas.width = parameters.width;
-	canvas.height = parameters.height;
-	var ctx = canvas.getContext('2d');
-	
-	var field = createField(parameters.width, parameters.height);
-	var particleCount = Math.floor(parameters.width * parameters.height * parameters.particle_density);
-	var particles = createParticles(field, particleCount);
-
-	var imageData = ctx.getImageData(0, 0, field.width, field.height);
-	var clearCanvas = new Uint8Array(4*field.width * field.height)
-	
-	function step() {
-		var j = particles.count;
-		while (j--) {
-			if (particles.stuck[j] != CLUSTER) {
-				updateParticle(particles, field, j);
-			}
-		}	
-		
-		imageData.data.set(clearCanvas);
-		render(field, imageData.data, particles);
-		
-		ctx.putImageData(imageData, 0, 0);
-		
-		var idle = 0;
-		var i = particles.count;
-		while (i--) 
-			idle += particles.stuck[i];
-
-		if (idle < parameters.stopping_fraction * particles.count) {
-			requestAnimationFrame(step);
-		}
-		else {
-			imageData.data.set(clearCanvas);
-			render(field, imageData.data, particles);
-			ctx.putImageData(imageData, 0, 0);
-		}
-	}
-
-	requestAnimationFrame(step);
-----
-
-
-You can download finished visualisation link:https://github.com/xmichaelx/xmichaelx.github.io/tree/master/files/dla[here]. 
+You can download finished visualisation code link:https://github.com/xmichaelx/xmichaelx.github.io/tree/master/files/dla[here]. 
 
 
 
-== Sample image
+== Sample images
 
-image:dla.png[Grosz,300] 
+image:dla/23.png[DLA,300] 
+image:dla/36.png[DLA,300] 
+
+image:dla/49.png[DLA,300] 
+image:dla/62.png[DLA,300] 
+
+== Sample animation
+
+image:dla/dla.gif[DLA,300] 
+
+
+
 
