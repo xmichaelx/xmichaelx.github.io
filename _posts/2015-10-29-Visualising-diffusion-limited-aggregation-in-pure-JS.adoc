@@ -240,7 +240,25 @@ The start function glues together functions above and triggers render function e
 
 
 ++++
-<?dbhtml-include href="https://raw.githubusercontent.com/xmichaelx/xmichaelx.github.io/master/files/dla/dla.html"?>
+<div class="container">
+	  	<h1>Diffusion-Limited aggregation</h1>
+	    <div class="row">
+			<div class="col-xs-12">
+				<div class="input-group">
+					<span class="input-group-addon">Parameters</span>
+					<input type="text" class="form-control" id="parameters">
+					<span class="input-group-btn">
+				        <button class="btn btn-default" onclick="start()">Start</button>
+				    </span>
+				</div>
+			</div>
+	    </div>
+	    <div class="row">
+	    	<div class="col-xs-12">
+	    		<canvas class="img-thumbnail" id="canvas"></canvas>
+	    	</div>
+    	</div>
+	  </div> 
 ++++
 
 
