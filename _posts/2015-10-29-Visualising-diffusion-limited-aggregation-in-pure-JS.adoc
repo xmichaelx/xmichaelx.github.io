@@ -10,11 +10,6 @@ image:dla.JPG[DLA,300]
 
 Above we can see a DLA cluster grown from a copper sulfate solution in an electrodeposition cell.
 
-image:dla/36.png[DLA,400] 
-image:dla/62.png[DLA,400]
-
-Above we can see DLA cluster grown as result of our implementation.
-
 == Model
 
 To visualise DLA in browser we need to agree to some model. Let's assume that:
@@ -240,6 +235,7 @@ The start function glues together functions above and triggers render function e
 
 
 ++++
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
 <script>
 window.onload = function () { 
 	var initialParameters = { width : 800, height : 800, particle_density : 0.25, stopping_fraction : 0.5 };
