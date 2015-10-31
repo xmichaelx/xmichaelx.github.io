@@ -6,11 +6,11 @@
 
 link:https://en.wikipedia.org/wiki/Diffusion-limited_aggregation[Diffusion-limited aggregation] (DLA) is the process whereby particles undergoing a random walk due to Brownian motion cluster together to form aggregates of such particles. 
 
-image:dla.JPG[DLA,300] 
+image:dla.JPG[DLA,500] 
 
 Above we can see a DLA cluster grown from a copper sulfate solution in an electrodeposition cell.
 
-image:dla/62.png[DLA,300] 
+image:dla/62.png[DLA,500] 
 
 Above we can see cluster grown by our algorithm.
 
