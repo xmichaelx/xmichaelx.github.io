@@ -35,7 +35,7 @@
     <meta property="og:description" content="What is diffusion-limited aggregation? Diffusion-limited aggregation (DLA) is the process whereby particles undergoing a random walk due to Brownian motion cluster together to form aggregates of such particles. Above we can see a DLA cluster grown from a copper sulfate..." />
     <meta property="og:url" content="https://xmichaelx.github.io/2015/10/29/Visualising-diffusion-limited-aggregation-in-pure-JS.html" />
     <meta property="article:published_time" content="2015-10-28T23:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-10-31T12:38:06.092Z" />
+    <meta property="article:modified_time" content="2015-10-31T12:42:37.055Z" />
     <meta property="article:tag" content="Blog" />
     <meta property="article:tag" content="javascript" />
     <meta property="article:tag" content="complex systems" />
@@ -62,7 +62,7 @@
     "headline": "Visualising diffusion-limited aggregation in pure JS",
     "url": "https://xmichaelx.github.io/2015/10/29/Visualising-diffusion-limited-aggregation-in-pure-JS.html",
     "datePublished": "2015-10-28T23:00:00.000Z",
-    "dateModified": "2015-10-31T12:38:06.092Z",
+    "dateModified": "2015-10-31T12:42:37.055Z",
     "keywords": "Blog,  javascript,  complex systems,  visualisation,  dla",
     "description": "What is diffusion-limited aggregation? Diffusion-limited aggregation (DLA) is the process whereby particles undergoing a random walk due to Brownian motion cluster together to form aggregates of such particles. Above we can see a DLA cluster grown from a copper sulfate..."
 }
@@ -160,6 +160,12 @@
 </div>
 <div class="paragraph">
 <p>Above we can see a DLA cluster grown from a copper sulfate solution in an electrodeposition cell.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="/images/dla/62.png" alt="DLA" width="300"></span></p>
+</div>
+<div class="paragraph">
+<p>Above we can see cluster grown by our algorithm.</p>
 </div>
 </div>
 </div>
@@ -422,6 +428,12 @@ function createParticles(field, count) {
 <div class="sect1">
 <h2 id="_result">Result</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>You can download finished visualisation code <a href="https://github.com/xmichaelx/xmichaelx.github.io/tree/master/files/dla">here</a>.</p>
+</div>
+<div class="paragraph">
+<p>Below you can specify parameters and start simulation:</p>
+</div>
 <script>
 window.onload = function () {
 	var initialParameters = { width : 800, height : 800, particle_density : 0.25, stopping_fraction : 0.5 };
@@ -583,8 +595,7 @@ function start() {
 </script>
 
 <div>
-    <span>Parameters</span>
-    <input type="text" id="parameters">
+    <input type="text" style="width:480px" id="parameters">
     <span>
 	    <button class="btn btn-secondary" onclick="start()">Start</button>
 	</span>
@@ -592,12 +603,6 @@ function start() {
 </div>
 
 <canvas class="img-thumbnail" id="canvas"></canvas>
-<div class="paragraph">
-<p>You can download finished visualisation code <a href="https://github.com/xmichaelx/xmichaelx.github.io/tree/master/files/dla">here</a>.</p>
-</div>
-<div class="paragraph">
-<p><a href="https://github.com/xmichaelx/xmichaelx.github.io/tree/master/images/dla">Gallery</a></p>
-</div>
 </div>
 </div>
     </section>
