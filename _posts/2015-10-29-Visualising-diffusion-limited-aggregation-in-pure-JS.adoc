@@ -237,15 +237,13 @@ You can download finished visualisation code link:https://github.com/xmichaelx/x
 
 == Sample images
 
-image:dla/23.png[DLA,300] 
 image:dla/36.png[DLA,300] 
 
-image:dla/49.png[DLA,300] 
 image:dla/62.png[DLA,300] 
 
 == Sample animation
 
-image:dla/dla.gif[DLA,300] 
+link:dla/dla.gif[DLA,300] 
 
 
 
