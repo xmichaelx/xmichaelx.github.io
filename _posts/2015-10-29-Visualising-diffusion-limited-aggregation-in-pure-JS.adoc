@@ -241,9 +241,7 @@ image:dla/36.png[DLA,300]
 
 image:dla/62.png[DLA,300] 
 
-== Sample animation
-
-link:dla/dla.gif[DLA,300] 
+link:https://github.com/xmichaelx/xmichaelx.github.io/tree/master/images/dla[Gallery] 
 
 
 
