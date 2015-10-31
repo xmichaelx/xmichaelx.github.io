@@ -244,7 +244,7 @@ Below you can specify parameters and start simulation:
 ++++
 <script>
 window.onload = function () { 
-	var initialParameters = { width : 800, height : 800, particle_density : 0.25, stopping_fraction : 0.5 };
+	var initialParameters = { width : 512, height : 512, particle_density : 0.25, stopping_fraction : 0.5 };
 	document.getElementById("parameters").value = JSON.stringify(initialParameters);
 };
 
