@@ -24,53 +24,6 @@ To visualise DLA in browser we need to agree to some model. Let's assume that:
 
 Model is dead simple. Let's see how we can implement it and generate some pretty pictures.
 
-== View
-
-We would like to visualise evolution of our algorithm and see how the aggregation happens. 
-For that purpose we will use canvas HTML canvas element which provides us with a nice bitmap to draw on.
-
-We will also need an input for out algorithm parameters and a button to start simulation. Here's the complete markup for the view:
-
-[source,html]
-----
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Diffusion-Limited aggregation</title>
-	<meta name="description" content="Diffusion-Limited aggregation">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
-	<script src="dla.js"></script>
-  </head>
-  <body>
-	  <div class="container">
-	  	<h1>Diffusion-Limited aggregation</h1>
-	    <div class="row">
-			<div class="col-xs-12">
-				<div class="input-group">
-					<span class="input-group-addon">Parameters</span>
-					<input type="text" class="form-control" id="parameters">
-					<span class="input-group-btn">
-				        <button class="btn btn-default" onclick="start()">Start</button>
-				    </span>
-				</div>
-			</div>
-	    </div>
-	    <div class="row">
-	    	<div class="col-xs-12">
-	    		<canvas class="img-thumbnail" id="canvas"></canvas>
-	    	</div>
-    	</div>
-	  </div> 
-  </body>
-</html>
-----
-
-
-We've used a little bit of Bootstrap CSS to make things look better. 
-We will put our code in dla.js script. And we will be starting our simulation using start function invoked by button click. 
-
-
 == Code
 
 
@@ -237,6 +190,7 @@ The start function glues together functions above and triggers render function e
 
 == Result
 
+Rest of the code and markup for the sample can be viewed & downloaded here:
 You can download finished visualisation code link:https://github.com/xmichaelx/xmichaelx.github.io/tree/master/files/dla[here]. 
 
 Below you can specify parameters and start simulation:
