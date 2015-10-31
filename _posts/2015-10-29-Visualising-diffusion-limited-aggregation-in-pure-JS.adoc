@@ -35,7 +35,7 @@ We will also need an input for out algorithm parameters and a button to start si
     <meta charset="utf-8">
     <title>Diffusion-Limited aggregation</title>
 	<meta name="description" content="Diffusion-Limited aggregation">
-    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
 	<script src="dla.js"></script>
   </head>
   <body>
