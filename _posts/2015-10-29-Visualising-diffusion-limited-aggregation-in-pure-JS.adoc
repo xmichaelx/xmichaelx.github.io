@@ -10,6 +10,10 @@ image:dla.JPG[DLA,300]
 
 Above we can see a DLA cluster grown from a copper sulfate solution in an electrodeposition cell.
 
+image:dla/62.png[DLA,300] 
+
+Above we can see cluster grown by our algorithm.
+
 == Model
 
 To visualise DLA in browser we need to agree to some model. Let's assume that:
@@ -233,6 +237,9 @@ The start function glues together functions above and triggers render function e
 
 == Result
 
+You can download finished visualisation code link:https://github.com/xmichaelx/xmichaelx.github.io/tree/master/files/dla[here]. 
+
+Below you can specify parameters and start simulation:
 
 ++++
 <script>
@@ -396,8 +403,7 @@ function start() {
 </script>
 
 <div>
-    <span>Parameters</span>
-    <input type="text" id="parameters">
+    <input type="text" style="width:480px" id="parameters">
     <span>
 	    <button class="btn btn-secondary" onclick="start()">Start</button>
 	</span>
@@ -407,11 +413,6 @@ function start() {
 <canvas class="img-thumbnail" id="canvas"></canvas>
 ++++
 
-
-You can download finished visualisation code link:https://github.com/xmichaelx/xmichaelx.github.io/tree/master/files/dla[here]. 
- 
-
-link:https://github.com/xmichaelx/xmichaelx.github.io/tree/master/images/dla[Gallery] 
 
 
 
