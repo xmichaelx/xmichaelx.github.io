@@ -231,7 +231,7 @@ function render(field, canvas, particles, stopping_fraction) {
 The start function glues together functions above and triggers render function every frame.
 
 
-== Conclusion
+== Result
 
 
 ++++
@@ -399,7 +399,7 @@ function start() {
     <span>Parameters</span>
     <input type="text" id="parameters">
     <span>
-	    <button onclick="start()">Start</button>
+	    <button class="btn btn-secondary" onclick="start()">Start</button>
 	</span>
 
 </div>
