@@ -10,6 +10,11 @@ image:dla.JPG[DLA,300]
 
 Above we can see a DLA cluster grown from a copper sulfate solution in an electrodeposition cell.
 
+image:dla/36.png[DLA,400] 
+image:dla/62.png[DLA,400]
+
+Above we can see DLA cluster grown as result of our implementation.
+
 == Model
 
 To visualise DLA in browser we need to agree to some model. Let's assume that:
@@ -231,15 +236,16 @@ function render(field, canvas, particles, stopping_fraction) {
 The start function glues together functions above and triggers render function every frame.
 
 
+== Conclusion
+
+
+++++
+<?dbhtml-include href="https://raw.githubusercontent.com/xmichaelx/xmichaelx.github.io/master/files/dla/dla.html"?>
+++++
+
+
 You can download finished visualisation code link:https://github.com/xmichaelx/xmichaelx.github.io/tree/master/files/dla[here]. 
-
-
-
-== Sample images
-
-image:dla/36.png[DLA,400] 
-
-image:dla/62.png[DLA,400] 
+ 
 
 link:https://github.com/xmichaelx/xmichaelx.github.io/tree/master/images/dla[Gallery] 
 
